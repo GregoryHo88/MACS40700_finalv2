@@ -16,7 +16,7 @@ The analysis is guided by two research questions:
 
 Data for this analysis was sourced from the ACS 5-Year Estimates for 2022. I've chosen to focus on housing accessibility for this proposal. Data on population demographics, poverty headcounts, and housing costs were extracted using the **tidycensus** package. The analysis focused on census tracts within Cook County to provide a more granular view of poverty in Chicago.
 
-```{r dependencies}
+```{r dependencies, echo = TRUE, include = FALSE }
 # Installing Required Packages
 # Uncomment the lines below to install packages if they are not already installed.
 
@@ -38,5 +38,6 @@ To proceed, you must have a Census API key. Visit the Census Bureau's [website](
 The following block stores your Census API key in your environment.
 
 ```{r api_key}
-census_api_key("YOUR_API_KEY_HERE", install=TRUE)
+#Uncheck and insert your API KEY
+#census_api_key("YOUR_API_KEY_HERE", install=TRUE)
 ```

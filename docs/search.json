@@ -2,16 +2,16 @@
   {
     "objectID": "index.html",
     "href": "index.html",
-    "title": "MACS40700_final_v2",
+    "title": "Charting Inequality: A Deep Dive into Chicago’s Poverty Landscape",
     "section": "",
-    "text": "Preface\nThis is a Quarto book.\nTo learn more about Quarto books visit https://quarto.org/docs/books.\n\n1 + 1\n\n[1] 2"
+    "text": "Preface\nThis project is seeks to investigate poverty in Chicago, and the various deprivations that households face. Data visualizations were produced using data published in the American Community Survey 5-Year Estimates as at 2022, compiled by the US Census Bureau."
   },
   {
     "objectID": "intro.html",
     "href": "intro.html",
     "title": "1  Introduction",
     "section": "",
-    "text": "This is a book created from markdown and executable code.\nSee Knuth (1984) for additional discussion of literate programming.\n\n1 + 1\n\n[1] 2\n\n\n\n\n\n\nKnuth, Donald E. 1984. “Literate Programming.” Comput. J. 27 (2): 97–111. https://doi.org/10.1093/comjnl/27.2.97."
+    "text": "2 Census API Key Configuration\nTo proceed, you must have a Census API key. Visit the Census Bureau’s website for instructions on obtaining one. (More info to get one in the main README document).\nThe following block stores your Census API key in your environment.\n#Uncheck and insert your API KEY\n#census_api_key(\"YOUR_API_KEY_HERE\", install=TRUE)"
   },
   {
     "objectID": "summary.html",
@@ -26,5 +26,33 @@
     "title": "References",
     "section": "",
     "text": "Knuth, Donald E. 1984. “Literate Programming.” Comput.\nJ. 27 (2): 97–111. https://doi.org/10.1093/comjnl/27.2.97."
+  },
+  {
+    "objectID": "intro.html#introduction",
+    "href": "intro.html#introduction",
+    "title": "1  Introduction",
+    "section": "1.1 Introduction",
+    "text": "1.1 Introduction\nChicago is a city with a diverse demographic and economic landscape. However, it faces significant challenges in relation to poverty. This research proposal aims to unravel the layers of poverty in the city, identifying key areas of deprivation that affect households. In the final project, I wish to examine key areas of deprivation such as access to shelter, healthcare, education and other indicators of living standards.\n\n1.1.1 Research Questions\nThe analysis is guided by two research questions:\nRQ1 - What are the key demographical factors associated with poverty in Chicago?\nRQ2 - How does housing affordability impact the prevalence of poverty in Chicago?"
+  },
+  {
+    "objectID": "intro.html#methods",
+    "href": "intro.html#methods",
+    "title": "1  Introduction",
+    "section": "1.2 Methods",
+    "text": "1.2 Methods\nData for this analysis was sourced from the ACS 5-Year Estimates for 2022. I’ve chosen to focus on housing accessibility for this proposal. Data on population demographics, poverty headcounts, and housing costs were extracted using the tidycensus package. The analysis focused on census tracts within Cook County to provide a more granular view of poverty in Chicago."
+  },
+  {
+    "objectID": "index.html#instructions-to-execute-code",
+    "href": "index.html#instructions-to-execute-code",
+    "title": "Charting Inequality: A Deep Dive into Chicago’s Poverty Landscape",
+    "section": "Instructions to Execute Code",
+    "text": "Instructions to Execute Code\nTo reproduce this analysis, an API key from the US Census Bureau is required. Follow these steps to obtain and use the key:\n1.) Request an API key by visiting this page to request a key\n2.) Activate the key using the link sent to your email.\n3.) Store the key as an environment variable in your project for secure access.\nNote: Detailed instructions and the code for the analysis are provided in the accompanying R Markdown document."
+  },
+  {
+    "objectID": "index.html#credits",
+    "href": "index.html#credits",
+    "title": "Charting Inequality: A Deep Dive into Chicago’s Poverty Landscape",
+    "section": "Credits",
+    "text": "Credits\nTo be filled later"
   }
 ]
