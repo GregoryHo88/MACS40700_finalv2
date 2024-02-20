@@ -57,31 +57,18 @@ chicago_data_poverty <- get_acs(geography = "county",
 
 combined_data_poverty <- chicago_data_poverty %>%
   mutate(Category = recode(variable,
-                           "B17001A_002" = "White",
-                           "B17001B_002" = "Black",
-                           "B17001C_002" = "Native American",
-                           "B17001D_002" = "Asian",
-                           "B17001E_002" = "Hawaiian",
-                           "B17001F_002" = "Other",
-                           "B17001I_002" = "Hispanic",
-                           "B17001_003" = "Male",
-                           "B17001_017" = "Female",
-                           "B17003_004" = "Less than HS (Male)",
-                           "B17003_005" = "HS Graduate (Male)",
-                           "B17003_006" = "Some College (Male)",
-                           "B17003_007" = "Bachelor or Higher (Male)",
-                           "B17003_009" = "Less than HS (Female)",
-                           "B17003_010" = "HS Graduate (Female)",
-                           "B17003_011" = "Some College (Female)",
-                           "B17003_012" = "Bachelor or Higher (Female)",
-                           "B17006_003" = "Married Couple",
-                           "B17006_008" = "Single Parent (Male)",
-                           "B17006_012" = "Single Parent (Female)"),
+                           "Less_HS_male" = "Less_HS",
+                           "HS_Grad_male" = "HS_Grad",
+                           "Some_College_male" = "Some_College",
+                           "Bachelor_Or_Higher_male" = "Bachelor_Or_Higher",
+                           "Less_HS_female" = "Less_HS",
+                           "HS_Grad_female" = "HS_Grad",
+                           "Some_College_female" = "Some_College",
+                           "Bachelor_Or_Higher_female" = "Bachelor_Or_Higher"),
          Facet = case_when(
            Category %in% c("Male", "Female") ~ "Gender",
            Category %in% c("White", "Black", "Native_American", "Asian", "Hawaiian", "Other", "Hispanic") ~ "Race",
-           Category %in% c("Less_HS_male", "HS_Grad_male", "Some_College_male", "Bachelor_Or_Higher_male",
-                           "Less_HS_female", "HS_Grad_female", "Some_College_female", "Bachelor_Or_Higher_female") ~ "Education",
+           Category %in% c("Less_HS", "HS_Grad", "Some_College", "Bachelor_Or_Higher") ~ "Education",
            Category %in% c("Married_Couple", "Single_Parent_Male", "Single_Parent_Female") ~ "Household Type"
          )) %>%
   select(-GEOID, -NAME, -variable, -moe)  # Remove unnecessary columns
@@ -121,7 +108,7 @@ chart1 <- ggplot(combined_data_poverty, aes(fill = Category, values = estimate))
 chart1
 
 #Alternately:
-# Function to create a waffle chart for a given facet
+# Function to create a waffle chart for a given facet with adjusted legend
 create_facet_waffle <- function(data, facet_name) {
   filtered_data <- data %>% filter(Facet == facet_name)
   
@@ -130,7 +117,10 @@ create_facet_waffle <- function(data, facet_name) {
     labs(title = facet_name, fill = "Category") +
     scale_fill_manual(values = replicated_palette) +
     theme_void() +
-    theme(legend.position = "bottom")
+    theme(legend.position = "right",
+          legend.key.size = unit(0.5, "cm"),  # Adjust legend key size
+          legend.text = element_text(size = 4),  # Adjust legend text size
+          legend.title = element_blank())  # Adjust legend title size
 }
 
 # Create individual plots

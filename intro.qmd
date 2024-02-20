@@ -16,20 +16,6 @@ The analysis is guided by two research questions:
 
 Data for this analysis was sourced from the ACS 5-Year Estimates for 2022. I've chosen to focus on housing accessibility for this proposal. Data on population demographics, poverty headcounts, and housing costs were extracted using the **tidycensus** package. The analysis focused on census tracts within Cook County to provide a more granular view of poverty in Chicago.
 
-```{r dependencies, echo = TRUE, include = FALSE }
-# Installing Required Packages
-# Uncomment the lines below to install packages if they are not already installed.
-
-#install.packages(tidycensus)
-#install.packages(waffle)
-
-# Load the necessary libraries
-library(tidyverse)
-library(tidycensus)
-library(ggplot2)
-library(dplyr)
-library(waffle)
-```
 
 ### Census API Key Configuration
 

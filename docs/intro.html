@@ -148,7 +148,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./descriptive_stats.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">descriptive_stats</span></span></a>
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Descriptive Statistics</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
@@ -176,9 +176,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction"><span class="header-section-number">1.1</span> Introduction</a>
   <ul class="collapse">
   <li><a href="#research-questions" id="toc-research-questions" class="nav-link" data-scroll-target="#research-questions"><span class="header-section-number">1.1.1</span> Research Questions</a></li>
+  <li><a href="#methods" id="toc-methods" class="nav-link" data-scroll-target="#methods"><span class="header-section-number">1.1.2</span> Methods</a></li>
+  <li><a href="#census-api-key-configuration" id="toc-census-api-key-configuration" class="nav-link" data-scroll-target="#census-api-key-configuration"><span class="header-section-number">1.1.3</span> Census API Key Configuration</a></li>
   </ul></li>
-  <li><a href="#methods" id="toc-methods" class="nav-link" data-scroll-target="#methods"><span class="header-section-number">1.2</span> Methods</a></li>
-  <li><a href="#census-api-key-configuration" id="toc-census-api-key-configuration" class="nav-link" data-scroll-target="#census-api-key-configuration"><span class="header-section-number">2</span> Census API Key Configuration</a></li>
   </ul>
 </nav>
     </div>
@@ -211,13 +211,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p><strong>RQ1 -</strong> What are the key demographical factors associated with poverty in Chicago?</p>
 <p><strong>RQ2</strong> - How does housing affordability impact the prevalence of poverty in Chicago?</p>
 </section>
-</section>
-<section id="methods" class="level2" data-number="1.2">
-<h2 data-number="1.2" class="anchored" data-anchor-id="methods"><span class="header-section-number">1.2</span> Methods</h2>
+<section id="methods" class="level3" data-number="1.1.2">
+<h3 data-number="1.1.2" class="anchored" data-anchor-id="methods"><span class="header-section-number">1.1.2</span> Methods</h3>
 <p>Data for this analysis was sourced from the ACS 5-Year Estimates for 2022. I’ve chosen to focus on housing accessibility for this proposal. Data on population demographics, poverty headcounts, and housing costs were extracted using the <strong>tidycensus</strong> package. The analysis focused on census tracts within Cook County to provide a more granular view of poverty in Chicago.</p>
 </section>
-<section id="census-api-key-configuration" class="level1" data-number="2">
-<h1 data-number="2"><span class="header-section-number">2</span> Census API Key Configuration</h1>
+<section id="census-api-key-configuration" class="level3" data-number="1.1.3">
+<h3 data-number="1.1.3" class="anchored" data-anchor-id="census-api-key-configuration"><span class="header-section-number">1.1.3</span> Census API Key Configuration</h3>
 <p>To proceed, you must have a Census API key. Visit the Census Bureau’s <a href="https://api.census.gov/data/key_signup.html">website</a> for instructions on obtaining one. (More info to get one in the main README document).</p>
 <p>The following block stores your Census API key in your environment.</p>
 <div class="cell">
@@ -226,6 +225,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 
 
+</section>
 </section>
 
 </main> <!-- /main -->
@@ -470,7 +470,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   </div>
   <div class="nav-page nav-page-next">
       <a href="./descriptive_stats.html" class="pagination-link">
-        <span class="nav-page-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">descriptive_stats</span></span> <i class="bi bi-arrow-right-short"></i>
+        <span class="nav-page-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Descriptive Statistics</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>
