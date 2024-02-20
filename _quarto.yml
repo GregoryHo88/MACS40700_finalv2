@@ -10,6 +10,7 @@ book:
     - index.qmd
     - intro.qmd
     - descriptive_stats.qmd
+    - multidimensional_poverty.qmd
     - summary.qmd
     - references.qmd
 

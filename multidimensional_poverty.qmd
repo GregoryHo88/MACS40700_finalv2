@@ -1,0 +1,160 @@
+# Multidimensional Poverty
+
+```{r dependencies, echo = TRUE, include = FALSE}
+# Installing Required Packages
+# Uncomment the lines below to install packages if they are not already installed.
+
+#install.packages(tidycensus)
+#install.packages(waffle)
+
+# Load the necessary libraries
+library(tidyverse)
+library(tidycensus)
+library(ggplot2)
+library(dplyr)
+library(waffle)
+library(patchwork)
+```
+
+The starting point of constructing a Multidimensional Poverty Indicator would be the generation of a matrix representing tract areas versus indicators of deprivation.
+
+To generate this matrix, the first step is to identify dimensions of deprivation that can be constructed using the ACS. These are:
+
+1.  Education - percentage of kids not enrolled in school (B14001_010/B14001_001)
+
+2.  Health - percentage of adults without health insurance (sum(B27001_011,B27001_014,B27001_017,B27001_020,B27001_023,B27001_026)/) #Work on this later
+
+3.  Housing - percentage overcrowded: more than 2 occupants per room (B25014_007 + B25014_013)/(B25014_001 + B25014_008)
+
+4.  Housing - percentage cost-burdened (B25070_007E + B25070_008E + B25070_009E + B25070_010E) / B25070_001E)
+
+5.  Living Conditions - percentage without plumbing facilities (B25047_003/B25047_001)
+
+6.  Living Conditions - percentage without kitchen facilities (B25053_004 + B25053_007)/(B25053_001)
+
+7.  Digitalization - percentage without computer (B28001_011/B28001_001)
+
+8.  Digitalization - percentage without internet access (B28002_013/B28002_001)
+
+9.  Digitalization - percentage internet access without subscription (B28002_012/B28001_001)
+
+10. Employment - percent unemployed (B23025_005/B23025_002)
+
+11. Employment - percent not in labor force (B23025_007/B23025_001)
+
+```{r viz3_etl}
+
+# Define ACS variables for each indicator of deprivation
+variables_deprivation <- c(
+  # Education
+  Kids_Not_In_School = "B14001_010",
+  Total_Kids = "B14001_001",
+  
+  # Health
+  # Placeholder for health insurance variables - to be completed
+  
+  # Housing
+  Overcrowded_Housing_own = "B25014_007",
+  Overcrowded_Housing_rent = "B25014_013",
+  Total_Housing = "B25002_001",
+  Cost_Burdened_Housing_total = "B25070_001",
+  Cost_Burdened_Housing_30_35 = "B25070_007",
+  Cost_Burdened_Housing_35_40 = "B25070_008",
+  Cost_Burdened_Housing_40_50 = "B25070_009",
+  Cost_Burdened_Housing_50_above = "B25070_010",
+  
+  
+  # Living Conditions
+  No_Plumbing = "B25047_003",
+  Total_Housing_Plumbing = "B25047_001",
+  No_Kitchen_own = "B25053_004",
+  No_Kitchen_rent = "B25053_007",
+  Total_Housing_Kitchen = "B25053_001",
+  
+  # Digitalization
+  No_Computer = "B28001_011",
+  Total_Households = "B28001_001",
+  No_Internet = "B28002_013",
+  Internet_No_Subscription = "B28002_012",
+  
+  # Employment
+  Unemployed = "B23025_005",
+  Total_Workforce = "B23025_002",
+  Not_In_Labor_Force = "B23025_007",
+  Total_Population_Employment = "B23025_001"
+)
+
+# Pull data for Chicago at the tract level
+chicago_data_deprivation <- get_acs(geography = "tract",
+                                    variables = variables_deprivation,
+                                    state = "IL",
+                                    county = "Cook",
+                                    output = "wide",
+                                    year = 2022,
+                                    survey = "acs5")
+```
+
+```{r viz3_processing}
+
+# Calculate percentages for each indicator of deprivation
+deprivation_percentages <- chicago_data_deprivation %>%
+  mutate(
+    # Education
+    Pct_Kids_Not_In_School = (Kids_Not_In_SchoolE / Total_KidsE) * 100,
+    
+    # Housing
+    Pct_Overcrowded_Housing = ((Overcrowded_Housing_ownE + Overcrowded_Housing_rentE) / Total_HousingE) * 100,
+    Pct_Cost_Burdened_Housing = ((Cost_Burdened_Housing_30_35E + Cost_Burdened_Housing_35_40E + 
+                                  Cost_Burdened_Housing_40_50E + Cost_Burdened_Housing_50_aboveE) / 
+                                  Cost_Burdened_Housing_totalE) * 100,
+    
+    # Living Conditions
+    Pct_No_Plumbing = (No_PlumbingE / Total_Housing_PlumbingE) * 100,
+    Pct_No_Kitchen = ((No_Kitchen_ownE + No_Kitchen_rentE) / Total_Housing_KitchenE) * 100,
+    
+    # Digitalization
+    Pct_No_Computer = (No_ComputerE / Total_HouseholdsE) * 100,
+    Pct_No_Internet = (No_InternetE / Total_HouseholdsE) * 100,
+    Pct_Internet_No_Subscription = (Internet_No_SubscriptionE / Total_HouseholdsE) * 100,
+    
+    # Employment
+    Pct_Unemployed = (UnemployedE / Total_WorkforceE) * 100,
+    Pct_Not_In_Labor_Force = (Not_In_Labor_ForceE / Total_Population_EmploymentE) * 100
+  ) %>%
+  select(GEOID, starts_with("Pct_"))  # Keep only GEOID and calculated percentages
+```
+
+# Deprivation Cutoffs
+
+Intermediete Step here
+
+# Exploratory Factor Analysis
+
+```{r factor}
+library(psych)
+# Exclude non-numeric variables if any
+deprivation_factors <- deprivation_percentages %>% 
+  select(-GEOID) %>%  # Exclude GEOID or any other non-numeric variables
+  select_if(is.numeric)  # Select only numeric columns
+
+# Check for NA values and decide on handling strategy
+summary(deprivation_factors)
+
+fa_result <- fa(deprivation_factors, nfactors = 5, rotate = "varimax", fm = "minres")
+
+# Print the factor analysis results
+print(fa_result)
+
+# Plot the factor loadings for a visual representation
+fa.diagram(fa_result)
+```
+
+```{r factor_res}
+# Examine factor loadings
+loadings <- fa_result$loadings
+
+# Print factor loadings for interpretation
+print(loadings)
+
+
+```

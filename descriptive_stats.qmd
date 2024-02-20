@@ -2,7 +2,7 @@
 
 In this section, we delve into the heart of Chicago's socioeconomic fabric through a comprehensive examination of descriptive statistics drawn from the American Community Survey (ACS) 5-Year Estimates for 2022. By dissecting data across various census tracts within Cook County, we aim to uncover the underlying patterns and distributions of poverty, housing affordability, and demographic factors that shape the city's landscape. From median household incomes to poverty rates, and housing costs, each statistic not only quantifies the challenges faced by many Chicagoans but also sets the groundwork for deeper analysis.
 
-```{r dependencies, echo = TRUE, include = FALSE }
+```{r dependencies, echo = TRUE, include = FALSE}
 # Installing Required Packages
 # Uncomment the lines below to install packages if they are not already installed.
 
@@ -94,20 +94,6 @@ num_categories <- length(unique(combined_data_poverty$Category))
 # Replicate the palette to cover all categories
 replicated_palette <- rep(okabe_ito_palette, length.out = num_categories)
 
-# Use the replicated palette in your ggplot
-chart1 <- ggplot(combined_data_poverty, aes(fill = Category, values = estimate)) +
-  geom_waffle(color = "white", make_proportional = TRUE, flip = TRUE) +  # Adjust n_rows as needed
-  facet_wrap(~Facet, scales = "free_x", nrow = 1) +  # Use ncol or nrow to control layout
-  labs(title = "Demographic Breakdown of Poverty in Chicago by Facet", fill = "Category") +
-  scale_fill_manual(values = replicated_palette) +
-  theme_void() +
-  theme(legend.position = "bottom",
-        strip.background = element_blank(),
-        strip.text.x = element_text(size = 12, face = "bold"))
-
-chart1
-
-#Alternately:
 # Function to create a waffle chart for a given facet with adjusted legend
 create_facet_waffle <- function(data, facet_name) {
   filtered_data <- data %>% filter(Facet == facet_name)
@@ -139,3 +125,47 @@ combined_plot
 The first visualization is a descriptive chart. I chose to use a waffle chart to represent the demographic composition of poverty in Chicago. I think a waffle chart in particularly suited to do the job in giving the reader a sense of how the composition of poverty is divided along racial and gender lines. The reader can easily tell that there are more women in poverty, than there are men, and that Blacks comprise the largest racial component out of the total poverty headcount.
 
 **On Design** - To ensure that the heaviest component falls to the bottom segment of the waffle, I had to aggregate and reorder each category by their relative frequencies (counts). I also thought that this would be a good opportunity to use the Okabe-Ito color scheme that is accessible to people with color vision deficiency.
+
+## Plot 2 - WIP
+
+```{r viz2_etl}
+## Set your desired variables
+variables <- c(Total_Pop = "B01003_001",
+               Poverty = "B17001_002")
+
+# Pull ACS data for census tracts in Cook County (Chicago)
+chicago_tracts_poverty <- get_acs(geography = "tract",
+                                  variables = variables,
+                                  state = "IL",
+                                  county = "Cook",
+                                  geometry = TRUE,
+                                  output = "wide",
+                                  year = 2022,
+                                  survey = "acs5")
+
+# Calculate the poverty rate as a percentage
+chicago_tracts_poverty <- chicago_tracts_poverty %>%
+  mutate(poverty_rate = (PovertyE / Total_PopE) * 100)
+```
+```{r viz2_ggplot}
+# Define the limits of your bounding box
+xlim <- c(-87.9, -87.5)
+ylim <- c(41.6, 42.0)
+#Note: Adjust these values based on your area of interest
+
+# Create the choropleth map with zoom to the bounding box
+chart2 <- ggplot(chicago_tracts_poverty) +
+  geom_sf(aes(fill = poverty_rate), color = NA) +
+  scale_fill_viridis_c(option = "magma", direction = -1, 
+                       labels = scales::percent_format(scale = 1),
+                       name = "Poverty Rate (%)") +
+  labs(title = "Poverty Rates by Census Tract in Chicago",
+       subtitle = "ACS 5-Year Estimates, 2022") +
+  theme_void() +
+  theme(legend.position = "right",
+        plot.title = element_text(hjust = 0.5),
+        plot.subtitle = element_text(hjust = 0.5)) +
+  coord_sf(xlim = xlim, ylim = ylim, expand = FALSE)
+
+chart2
+```
