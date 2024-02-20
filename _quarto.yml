@@ -3,10 +3,9 @@ project:
   output-dir: docs
 
 book:
-  title: "Charting Inequality: A Deep Dive into Chicago's Poverty Landscape""
+  title: "Charting Inequality: A Deep Dive into Chicago's Poverty Landscape"
   author: "Gregory Ho"
   date: "19/02/2024"
-  logo: DALL_E_logo.png
   chapters:
     - index.qmd
     - intro.qmd
