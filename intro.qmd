@@ -12,7 +12,7 @@ The analysis is guided by two research questions:
 
 **RQ2** - How does housing affordability impact the prevalence of poverty in Chicago?
 
-## Methods
+### Methods
 
 Data for this analysis was sourced from the ACS 5-Year Estimates for 2022. I've chosen to focus on housing accessibility for this proposal. Data on population demographics, poverty headcounts, and housing costs were extracted using the **tidycensus** package. The analysis focused on census tracts within Cook County to provide a more granular view of poverty in Chicago.
 
@@ -31,7 +31,7 @@ library(dplyr)
 library(waffle)
 ```
 
-# Census API Key Configuration
+### Census API Key Configuration
 
 To proceed, you must have a Census API key. Visit the Census Bureau's [website](https://api.census.gov/data/key_signup.html) for instructions on obtaining one. (More info to get one in the main README document).
 
