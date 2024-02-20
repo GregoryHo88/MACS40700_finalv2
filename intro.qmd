@@ -1,9 +1,42 @@
 # Introduction
 
-This is a book created from markdown and executable code.
+## Introduction
 
-See @knuth84 for additional discussion of literate programming.
+Chicago is a city with a diverse demographic and economic landscape. However, it faces significant challenges in relation to poverty. This research proposal aims to unravel the layers of poverty in the city, identifying key areas of deprivation that affect households. In the final project, I wish to examine key areas of deprivation such as access to shelter, healthcare, education and other indicators of living standards.
 
-```{r}
-1 + 1
+### Research Questions
+
+The analysis is guided by two research questions:
+
+**RQ1 -** What are the key demographical factors associated with poverty in Chicago?
+
+**RQ2** - How does housing affordability impact the prevalence of poverty in Chicago?
+
+## Methods
+
+Data for this analysis was sourced from the ACS 5-Year Estimates for 2022. I've chosen to focus on housing accessibility for this proposal. Data on population demographics, poverty headcounts, and housing costs were extracted using the **tidycensus** package. The analysis focused on census tracts within Cook County to provide a more granular view of poverty in Chicago.
+
+```{r dependencies}
+# Installing Required Packages
+# Uncomment the lines below to install packages if they are not already installed.
+
+#install.packages(tidycensus)
+#install.packages(waffle)
+
+# Load the necessary libraries
+library(tidyverse)
+library(tidycensus)
+library(ggplot2)
+library(dplyr)
+library(waffle)
+```
+
+# Census API Key Configuration
+
+To proceed, you must have a Census API key. Visit the Census Bureau's [website](https://api.census.gov/data/key_signup.html) for instructions on obtaining one. (More info to get one in the main README document).
+
+The following block stores your Census API key in your environment.
+
+```{r api_key}
+census_api_key("YOUR_API_KEY_HERE", install=TRUE)
 ```

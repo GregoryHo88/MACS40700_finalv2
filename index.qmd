@@ -1,9 +1,19 @@
 # Preface {.unnumbered}
 
-This is a Quarto book.
+This project is seeks to investigate poverty in Chicago, and the various deprivations that households face. Data visualizations were produced using data published in the American Community Survey 5-Year Estimates as at 2022, compiled by the US Census Bureau.
 
-To learn more about Quarto books visit <https://quarto.org/docs/books>.
+## Instructions to Execute Code
 
-```{r}
-1 + 1
-```
+To reproduce this analysis, an API key from the US Census Bureau is required. Follow these steps to obtain and use the key:
+
+1.) Request an API key by visiting this [page](https://api.census.gov/data/key_signup.html) to request a key
+
+2.) Activate the key using the link sent to your email.
+
+3.) Store the key as an environment variable in your project for secure access.
+
+Note: Detailed instructions and the code for the analysis are provided in the accompanying R Markdown document.
+
+## Credits
+
+To be filled later
