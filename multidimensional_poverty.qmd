@@ -42,7 +42,7 @@ To generate this matrix, the first step is to identify dimensions of deprivation
 
 11. Employment - percent not in labor force (B23025_007/B23025_001)
 
-```{r viz3_etl}
+```{r viz3_etl, echo = TRUE, include = FALSE}
 
 # Define ACS variables for each indicator of deprivation
 variables_deprivation <- c(

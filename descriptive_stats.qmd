@@ -128,7 +128,7 @@ The first visualization is a descriptive chart. I chose to use a waffle chart to
 
 ## Plot 2 - WIP
 
-```{r viz2_etl}
+```{r viz2_etl, echo = TRUE, include = FALSE}
 ## Set your desired variables
 variables <- c(Total_Pop = "B01003_001",
                Poverty = "B17001_002")

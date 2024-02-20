@@ -220,85 +220,32 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li><p>Employment - percent not in labor force (B23025_007/B23025_001)</p></li>
 </ol>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Define ACS variables for each indicator of deprivation</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>variables_deprivation <span class="ot">&lt;-</span> <span class="fu">c</span>(</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Education</span></span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">Kids_Not_In_School =</span> <span class="st">"B14001_010"</span>,</span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">Total_Kids =</span> <span class="st">"B14001_001"</span>,</span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Health</span></span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Placeholder for health insurance variables - to be completed</span></span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Housing</span></span>
-<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>  <span class="at">Overcrowded_Housing_own =</span> <span class="st">"B25014_007"</span>,</span>
-<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>  <span class="at">Overcrowded_Housing_rent =</span> <span class="st">"B25014_013"</span>,</span>
-<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>  <span class="at">Total_Housing =</span> <span class="st">"B25002_001"</span>,</span>
-<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>  <span class="at">Cost_Burdened_Housing_total =</span> <span class="st">"B25070_001"</span>,</span>
-<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>  <span class="at">Cost_Burdened_Housing_30_35 =</span> <span class="st">"B25070_007"</span>,</span>
-<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>  <span class="at">Cost_Burdened_Housing_35_40 =</span> <span class="st">"B25070_008"</span>,</span>
-<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>  <span class="at">Cost_Burdened_Housing_40_50 =</span> <span class="st">"B25070_009"</span>,</span>
-<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>  <span class="at">Cost_Burdened_Housing_50_above =</span> <span class="st">"B25070_010"</span>,</span>
-<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Living Conditions</span></span>
-<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>  <span class="at">No_Plumbing =</span> <span class="st">"B25047_003"</span>,</span>
-<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a>  <span class="at">Total_Housing_Plumbing =</span> <span class="st">"B25047_001"</span>,</span>
-<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a>  <span class="at">No_Kitchen_own =</span> <span class="st">"B25053_004"</span>,</span>
-<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a>  <span class="at">No_Kitchen_rent =</span> <span class="st">"B25053_007"</span>,</span>
-<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a>  <span class="at">Total_Housing_Kitchen =</span> <span class="st">"B25053_001"</span>,</span>
-<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Digitalization</span></span>
-<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a>  <span class="at">No_Computer =</span> <span class="st">"B28001_011"</span>,</span>
-<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a>  <span class="at">Total_Households =</span> <span class="st">"B28001_001"</span>,</span>
-<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a>  <span class="at">No_Internet =</span> <span class="st">"B28002_013"</span>,</span>
-<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a>  <span class="at">Internet_No_Subscription =</span> <span class="st">"B28002_012"</span>,</span>
-<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Employment</span></span>
-<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a>  <span class="at">Unemployed =</span> <span class="st">"B23025_005"</span>,</span>
-<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a>  <span class="at">Total_Workforce =</span> <span class="st">"B23025_002"</span>,</span>
-<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a>  <span class="at">Not_In_Labor_Force =</span> <span class="st">"B23025_007"</span>,</span>
-<span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a>  <span class="at">Total_Population_Employment =</span> <span class="st">"B23025_001"</span></span>
-<span id="cb1-39"><a href="#cb1-39" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb1-40"><a href="#cb1-40" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-41"><a href="#cb1-41" aria-hidden="true" tabindex="-1"></a><span class="co"># Pull data for Chicago at the tract level</span></span>
-<span id="cb1-42"><a href="#cb1-42" aria-hidden="true" tabindex="-1"></a>chicago_data_deprivation <span class="ot">&lt;-</span> <span class="fu">get_acs</span>(<span class="at">geography =</span> <span class="st">"tract"</span>,</span>
-<span id="cb1-43"><a href="#cb1-43" aria-hidden="true" tabindex="-1"></a>                                    <span class="at">variables =</span> variables_deprivation,</span>
-<span id="cb1-44"><a href="#cb1-44" aria-hidden="true" tabindex="-1"></a>                                    <span class="at">state =</span> <span class="st">"IL"</span>,</span>
-<span id="cb1-45"><a href="#cb1-45" aria-hidden="true" tabindex="-1"></a>                                    <span class="at">county =</span> <span class="st">"Cook"</span>,</span>
-<span id="cb1-46"><a href="#cb1-46" aria-hidden="true" tabindex="-1"></a>                                    <span class="at">output =</span> <span class="st">"wide"</span>,</span>
-<span id="cb1-47"><a href="#cb1-47" aria-hidden="true" tabindex="-1"></a>                                    <span class="at">year =</span> <span class="dv">2022</span>,</span>
-<span id="cb1-48"><a href="#cb1-48" aria-hidden="true" tabindex="-1"></a>                                    <span class="at">survey =</span> <span class="st">"acs5"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Getting data from the 2018-2022 5-year ACS</code></pre>
-</div>
-</div>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculate percentages for each indicator of deprivation</span></span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>deprivation_percentages <span class="ot">&lt;-</span> chicago_data_deprivation <span class="sc">%&gt;%</span></span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Education</span></span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">Pct_Kids_Not_In_School =</span> (Kids_Not_In_SchoolE <span class="sc">/</span> Total_KidsE) <span class="sc">*</span> <span class="dv">100</span>,</span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Housing</span></span>
-<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">Pct_Overcrowded_Housing =</span> ((Overcrowded_Housing_ownE <span class="sc">+</span> Overcrowded_Housing_rentE) <span class="sc">/</span> Total_HousingE) <span class="sc">*</span> <span class="dv">100</span>,</span>
-<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">Pct_Cost_Burdened_Housing =</span> ((Cost_Burdened_Housing_30_35E <span class="sc">+</span> Cost_Burdened_Housing_35_40E <span class="sc">+</span> </span>
-<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>                                  Cost_Burdened_Housing_40_50E <span class="sc">+</span> Cost_Burdened_Housing_50_aboveE) <span class="sc">/</span> </span>
-<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>                                  Cost_Burdened_Housing_totalE) <span class="sc">*</span> <span class="dv">100</span>,</span>
-<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Living Conditions</span></span>
-<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>    <span class="at">Pct_No_Plumbing =</span> (No_PlumbingE <span class="sc">/</span> Total_Housing_PlumbingE) <span class="sc">*</span> <span class="dv">100</span>,</span>
-<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>    <span class="at">Pct_No_Kitchen =</span> ((No_Kitchen_ownE <span class="sc">+</span> No_Kitchen_rentE) <span class="sc">/</span> Total_Housing_KitchenE) <span class="sc">*</span> <span class="dv">100</span>,</span>
-<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Digitalization</span></span>
-<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a>    <span class="at">Pct_No_Computer =</span> (No_ComputerE <span class="sc">/</span> Total_HouseholdsE) <span class="sc">*</span> <span class="dv">100</span>,</span>
-<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a>    <span class="at">Pct_No_Internet =</span> (No_InternetE <span class="sc">/</span> Total_HouseholdsE) <span class="sc">*</span> <span class="dv">100</span>,</span>
-<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a>    <span class="at">Pct_Internet_No_Subscription =</span> (Internet_No_SubscriptionE <span class="sc">/</span> Total_HouseholdsE) <span class="sc">*</span> <span class="dv">100</span>,</span>
-<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Employment</span></span>
-<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a>    <span class="at">Pct_Unemployed =</span> (UnemployedE <span class="sc">/</span> Total_WorkforceE) <span class="sc">*</span> <span class="dv">100</span>,</span>
-<span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a>    <span class="at">Pct_Not_In_Labor_Force =</span> (Not_In_Labor_ForceE <span class="sc">/</span> Total_Population_EmploymentE) <span class="sc">*</span> <span class="dv">100</span></span>
-<span id="cb3-25"><a href="#cb3-25" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
-<span id="cb3-26"><a href="#cb3-26" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(GEOID, <span class="fu">starts_with</span>(<span class="st">"Pct_"</span>))  <span class="co"># Keep only GEOID and calculated percentages</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculate percentages for each indicator of deprivation</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>deprivation_percentages <span class="ot">&lt;-</span> chicago_data_deprivation <span class="sc">%&gt;%</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Education</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">Pct_Kids_Not_In_School =</span> (Kids_Not_In_SchoolE <span class="sc">/</span> Total_KidsE) <span class="sc">*</span> <span class="dv">100</span>,</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Housing</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">Pct_Overcrowded_Housing =</span> ((Overcrowded_Housing_ownE <span class="sc">+</span> Overcrowded_Housing_rentE) <span class="sc">/</span> Total_HousingE) <span class="sc">*</span> <span class="dv">100</span>,</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">Pct_Cost_Burdened_Housing =</span> ((Cost_Burdened_Housing_30_35E <span class="sc">+</span> Cost_Burdened_Housing_35_40E <span class="sc">+</span> </span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>                                  Cost_Burdened_Housing_40_50E <span class="sc">+</span> Cost_Burdened_Housing_50_aboveE) <span class="sc">/</span> </span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>                                  Cost_Burdened_Housing_totalE) <span class="sc">*</span> <span class="dv">100</span>,</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Living Conditions</span></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>    <span class="at">Pct_No_Plumbing =</span> (No_PlumbingE <span class="sc">/</span> Total_Housing_PlumbingE) <span class="sc">*</span> <span class="dv">100</span>,</span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>    <span class="at">Pct_No_Kitchen =</span> ((No_Kitchen_ownE <span class="sc">+</span> No_Kitchen_rentE) <span class="sc">/</span> Total_Housing_KitchenE) <span class="sc">*</span> <span class="dv">100</span>,</span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Digitalization</span></span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>    <span class="at">Pct_No_Computer =</span> (No_ComputerE <span class="sc">/</span> Total_HouseholdsE) <span class="sc">*</span> <span class="dv">100</span>,</span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>    <span class="at">Pct_No_Internet =</span> (No_InternetE <span class="sc">/</span> Total_HouseholdsE) <span class="sc">*</span> <span class="dv">100</span>,</span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>    <span class="at">Pct_Internet_No_Subscription =</span> (Internet_No_SubscriptionE <span class="sc">/</span> Total_HouseholdsE) <span class="sc">*</span> <span class="dv">100</span>,</span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Employment</span></span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a>    <span class="at">Pct_Unemployed =</span> (UnemployedE <span class="sc">/</span> Total_WorkforceE) <span class="sc">*</span> <span class="dv">100</span>,</span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a>    <span class="at">Pct_Not_In_Labor_Force =</span> (Not_In_Labor_ForceE <span class="sc">/</span> Total_Population_EmploymentE) <span class="sc">*</span> <span class="dv">100</span></span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(GEOID, <span class="fu">starts_with</span>(<span class="st">"Pct_"</span>))  <span class="co"># Keep only GEOID and calculated percentages</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <section id="deprivation-cutoffs" class="level1" data-number="4">
 <h1 data-number="4"><span class="header-section-number">4</span> Deprivation Cutoffs</h1>
@@ -307,7 +254,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="exploratory-factor-analysis" class="level1" data-number="5">
 <h1 data-number="5"><span class="header-section-number">5</span> Exploratory Factor Analysis</h1>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(psych)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(psych)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>Warning: package 'psych' was built under R version 4.2.3</code></pre>
 </div>
@@ -320,13 +267,13 @@ Attaching package: 'psych'</code></pre>
 
     %+%, alpha</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Exclude non-numeric variables if any</span></span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>deprivation_factors <span class="ot">&lt;-</span> deprivation_percentages <span class="sc">%&gt;%</span> </span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span>GEOID) <span class="sc">%&gt;%</span>  <span class="co"># Exclude GEOID or any other non-numeric variables</span></span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select_if</span>(is.numeric)  <span class="co"># Select only numeric columns</span></span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Check for NA values and decide on handling strategy</span></span>
-<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(deprivation_factors)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Exclude non-numeric variables if any</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>deprivation_factors <span class="ot">&lt;-</span> deprivation_percentages <span class="sc">%&gt;%</span> </span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span>GEOID) <span class="sc">%&gt;%</span>  <span class="co"># Exclude GEOID or any other non-numeric variables</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select_if</span>(is.numeric)  <span class="co"># Select only numeric columns</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Check for NA values and decide on handling strategy</span></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(deprivation_factors)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code> Pct_Kids_Not_In_School Pct_Overcrowded_Housing Pct_Cost_Burdened_Housing
  Min.   :11.93          Min.   :0.0000          Min.   :  0.00           
@@ -353,10 +300,10 @@ Attaching package: 'psych'</code></pre>
  Max.   :21.9839              Max.   :47.742   Max.   :94.788        
  NA's   :4                    NA's   :4        NA's   :4             </code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>fa_result <span class="ot">&lt;-</span> <span class="fu">fa</span>(deprivation_factors, <span class="at">nfactors =</span> <span class="dv">5</span>, <span class="at">rotate =</span> <span class="st">"varimax"</span>, <span class="at">fm =</span> <span class="st">"minres"</span>)</span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Print the factor analysis results</span></span>
-<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(fa_result)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>fa_result <span class="ot">&lt;-</span> <span class="fu">fa</span>(deprivation_factors, <span class="at">nfactors =</span> <span class="dv">5</span>, <span class="at">rotate =</span> <span class="st">"varimax"</span>, <span class="at">fm =</span> <span class="st">"minres"</span>)</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Print the factor analysis results</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(fa_result)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Factor Analysis using method =  minres
 Call: fa(r = deprivation_factors, nfactors = 5, rotate = "varimax", 
@@ -403,18 +350,18 @@ Correlation of (regression) scores with factors   0.80 0.80 1.00 0.72 0.71
 Multiple R square of scores with factors          0.65 0.63 0.99 0.52 0.51
 Minimum correlation of possible factor scores     0.29 0.27 0.98 0.04 0.02</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot the factor loadings for a visual representation</span></span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="fu">fa.diagram</span>(fa_result)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot the factor loadings for a visual representation</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="fu">fa.diagram</span>(fa_result)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <p><img src="multidimensional_poverty_files/figure-html/factor-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Examine factor loadings</span></span>
-<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>loadings <span class="ot">&lt;-</span> fa_result<span class="sc">$</span>loadings</span>
-<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Print factor loadings for interpretation</span></span>
-<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(loadings)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Examine factor loadings</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>loadings <span class="ot">&lt;-</span> fa_result<span class="sc">$</span>loadings</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Print factor loadings for interpretation</span></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(loadings)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Loadings:
