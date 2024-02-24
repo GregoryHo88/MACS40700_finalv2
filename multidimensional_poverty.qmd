@@ -30,29 +30,29 @@ To generate this matrix, the first step is to identify dimensions of deprivation
 
 5.  Education - Percentage of adults 25 above that did not finish schooling
 
-6.  Health - percentage of adults without health insurance (sum(B27001_011,B27001_014,B27001_017,B27001_020,B27001_023,B27001_026)/) #Work on this later
+6.  Health - percentage of adults without health insurance
 
 7.  Health - percentage of children with disability status
 
 8.  Health - percentage of adults with disability status
 
-9.  Housing - percentage overcrowded: more than 2 occupants per room (B25014_007 + B25014_013)/(B25014_001 + B25014_008)
+9.  Housing - percentage overcrowded: more than 2 occupants per room
 
-10. Housing - percentage cost-burdened (B25070_007E + B25070_008E + B25070_009E + B25070_010E) / B25070_001E)
+10. Housing - percentage cost-burdened
 
-11. Living Conditions - percentage without plumbing facilities (B25047_003/B25047_001)
+11. Living Conditions - percentage without plumbing facilities
 
-12. Living Conditions - percentage without kitchen facilities (B25053_004 + B25053_007)/(B25053_001)
+12. Living Conditions - percentage without kitchen facilities
 
-13. Digitalization - percentage without computer (B28001_011/B28001_001)
+13. Digitalization - percentage without computer
 
-14. Digitalization - percentage without internet access (B28002_013/B28002_001)
+14. Digitalization - percentage without internet access
 
-15. Digitalization - percentage internet access without subscription (B28002_012/B28001_001)
+15. Digitalization - percentage internet access without subscription
 
-16. Employment - percent unemployed (B23025_005/B23025_002)
+16. Employment - percent unemployed
 
-17. Employment - percent not in labor force (B23025_007/B23025_001)
+17. Employment - percent not in labor force
 
 ```{r viz3_etl, echo = TRUE, include = FALSE}
 
