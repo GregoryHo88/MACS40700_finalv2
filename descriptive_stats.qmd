@@ -115,11 +115,25 @@ plot_race <- create_facet_waffle(combined_data_poverty, "Race")
 plot_education <- create_facet_waffle(combined_data_poverty, "Education")
 plot_household <- create_facet_waffle(combined_data_poverty, "Household Type")
 
-# Combine the plots horizontally
-combined_plot <- plot_gender | plot_race | plot_education | plot_household |
-                 plot_layout(ncol = 4)  # Arrange all plots in one row
+```
 
-combined_plot
+```{r combined1}
+# Combine the plots horizontally
+combined_plot1 <- plot_gender | plot_race |
+                 plot_layout(ncol = 2)  # Arrange all plots in one row
+
+combined_plot1
+
+```
+
+
+```{r combined2}
+# Combine the plots horizontally
+combined_plot2 <- plot_education | plot_household |
+                 plot_layout(ncol = 2)  # Arrange all plots in one row
+
+combined_plot2
+
 ```
 
 The first visualization is a descriptive chart. I chose to use a waffle chart to represent the demographic composition of poverty in Chicago. I think a waffle chart in particularly suited to do the job in giving the reader a sense of how the composition of poverty is divided along racial and gender lines. The reader can easily tell that there are more women in poverty, than there are men, and that Blacks comprise the largest racial component out of the total poverty headcount.
@@ -147,6 +161,8 @@ chicago_tracts_poverty <- get_acs(geography = "tract",
 chicago_tracts_poverty <- chicago_tracts_poverty %>%
   mutate(poverty_rate = (PovertyE / Total_PopE) * 100)
 ```
+
+
 ```{r viz2_ggplot}
 # Define the limits of your bounding box
 xlim <- c(-87.9, -87.5)
