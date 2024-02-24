@@ -207,45 +207,68 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>The starting point of constructing a Multidimensional Poverty Indicator would be the generation of a matrix representing tract areas versus indicators of deprivation.</p>
 <p>To generate this matrix, the first step is to identify dimensions of deprivation that can be constructed using the ACS. These are:</p>
 <ol type="1">
-<li><p>Education - percentage of kids not enrolled in school (B14001_010/B14001_001)</p></li>
-<li><p>Health - percentage of adults without health insurance (sum(B27001_011,B27001_014,B27001_017,B27001_020,B27001_023,B27001_026)/) #Work on this later</p></li>
-<li><p>Housing - percentage overcrowded: more than 2 occupants per room (B25014_007 + B25014_013)/(B25014_001 + B25014_008)</p></li>
-<li><p>Housing - percentage cost-burdened (B25070_007E + B25070_008E + B25070_009E + B25070_010E) / B25070_001E)</p></li>
-<li><p>Living Conditions - percentage without plumbing facilities (B25047_003/B25047_001)</p></li>
-<li><p>Living Conditions - percentage without kitchen facilities (B25053_004 + B25053_007)/(B25053_001)</p></li>
-<li><p>Digitalization - percentage without computer (B28001_011/B28001_001)</p></li>
-<li><p>Digitalization - percentage without internet access (B28002_013/B28002_001)</p></li>
-<li><p>Digitalization - percentage internet access without subscription (B28002_012/B28001_001)</p></li>
-<li><p>Employment - percent unemployed (B23025_005/B23025_002)</p></li>
-<li><p>Employment - percent not in labor force (B23025_007/B23025_001)</p></li>
+<li><p>Income - percentage below poverty level</p></li>
+<li><p>Income - percentage receiving public assistance</p></li>
+<li><p>Education - percentage of kids not enrolled in school</p></li>
+<li><p>Education - percentage of Youth Not Attending School and Not Working</p></li>
+<li><p>Education - Percentage of adults 25 above that did not finish schooling</p></li>
+<li><p>Health - percentage of adults without health insurance</p></li>
+<li><p>Health - percentage of children with disability status</p></li>
+<li><p>Health - percentage of adults with disability status</p></li>
+<li><p>Housing - percentage overcrowded: more than 2 occupants per room</p></li>
+<li><p>Housing - percentage cost-burdened</p></li>
+<li><p>Living Conditions - percentage without plumbing facilities</p></li>
+<li><p>Living Conditions - percentage without kitchen facilities</p></li>
+<li><p>Digitalization - percentage without computer</p></li>
+<li><p>Digitalization - percentage without internet access</p></li>
+<li><p>Digitalization - percentage internet access without subscription</p></li>
+<li><p>Employment - percent unemployed</p></li>
+<li><p>Employment - percent not in labor force</p></li>
 </ol>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculate percentages for each indicator of deprivation</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>deprivation_percentages <span class="ot">&lt;-</span> chicago_data_deprivation <span class="sc">%&gt;%</span></span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Education</span></span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">Pct_Kids_Not_In_School =</span> (Kids_Not_In_SchoolE <span class="sc">/</span> Total_KidsE) <span class="sc">*</span> <span class="dv">100</span>,</span>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>deprivation_percentages <span class="ot">&lt;-</span> chicago_data_deprivation <span class="sc">%&gt;%</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Income</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>    <span class="co">#Pct_Below_Poverty = (total_below_povertyE / poverty_totalE) * 100,</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">Pct_Receiving_PA =</span> (total_recieve_paE <span class="sc">/</span> recieve_pa_totalE) <span class="sc">*</span> <span class="dv">100</span>,</span>
 <span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Housing</span></span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">Pct_Overcrowded_Housing =</span> ((Overcrowded_Housing_ownE <span class="sc">+</span> Overcrowded_Housing_rentE) <span class="sc">/</span> Total_HousingE) <span class="sc">*</span> <span class="dv">100</span>,</span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">Pct_Cost_Burdened_Housing =</span> ((Cost_Burdened_Housing_30_35E <span class="sc">+</span> Cost_Burdened_Housing_35_40E <span class="sc">+</span> </span>
-<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>                                  Cost_Burdened_Housing_40_50E <span class="sc">+</span> Cost_Burdened_Housing_50_aboveE) <span class="sc">/</span> </span>
-<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>                                  Cost_Burdened_Housing_totalE) <span class="sc">*</span> <span class="dv">100</span>,</span>
-<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Living Conditions</span></span>
-<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>    <span class="at">Pct_No_Plumbing =</span> (No_PlumbingE <span class="sc">/</span> Total_Housing_PlumbingE) <span class="sc">*</span> <span class="dv">100</span>,</span>
-<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>    <span class="at">Pct_No_Kitchen =</span> ((No_Kitchen_ownE <span class="sc">+</span> No_Kitchen_rentE) <span class="sc">/</span> Total_Housing_KitchenE) <span class="sc">*</span> <span class="dv">100</span>,</span>
-<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Digitalization</span></span>
-<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>    <span class="at">Pct_No_Computer =</span> (No_ComputerE <span class="sc">/</span> Total_HouseholdsE) <span class="sc">*</span> <span class="dv">100</span>,</span>
-<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>    <span class="at">Pct_No_Internet =</span> (No_InternetE <span class="sc">/</span> Total_HouseholdsE) <span class="sc">*</span> <span class="dv">100</span>,</span>
-<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>    <span class="at">Pct_Internet_No_Subscription =</span> (Internet_No_SubscriptionE <span class="sc">/</span> Total_HouseholdsE) <span class="sc">*</span> <span class="dv">100</span>,</span>
-<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Employment</span></span>
-<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a>    <span class="at">Pct_Unemployed =</span> (UnemployedE <span class="sc">/</span> Total_WorkforceE) <span class="sc">*</span> <span class="dv">100</span>,</span>
-<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a>    <span class="at">Pct_Not_In_Labor_Force =</span> (Not_In_Labor_ForceE <span class="sc">/</span> Total_Population_EmploymentE) <span class="sc">*</span> <span class="dv">100</span></span>
-<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
-<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(GEOID, <span class="fu">starts_with</span>(<span class="st">"Pct_"</span>))  <span class="co"># Keep only GEOID and calculated percentages</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Education</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">Pct_Kids_Not_In_School =</span> (kids_Not_In_SchoolE <span class="sc">/</span> kids_totalE) <span class="sc">*</span> <span class="dv">100</span>,</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">Pct_Youth_Not_In_School_Not_Working =</span> ((youth_male_xschool_unemployedE <span class="sc">+</span> youth_male_xschool_xlfE <span class="sc">+</span> </span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>                                            youth_female_xschool_unemployedE <span class="sc">+</span> youth_female_xschool_xlfE) <span class="sc">/</span> youth_totalE) <span class="sc">*</span> <span class="dv">100</span>,</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">Pct_Adults_No_HighSchool =</span> ((abv25_no_schoolE <span class="sc">+</span> abv25_nurseryE <span class="sc">+</span> abv25_kindergartenE <span class="sc">+</span> abv25_g1E <span class="sc">+</span> </span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>                                 abv25_g2E <span class="sc">+</span> abv25_g3E <span class="sc">+</span> abv25_g4E <span class="sc">+</span> abv25_g5E <span class="sc">+</span> abv25_g6E <span class="sc">+</span> </span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>                                 abv25_g7E <span class="sc">+</span> abv25_g8E <span class="sc">+</span> abv25_g9E <span class="sc">+</span> abv25_g10E <span class="sc">+</span> abv25_g11E <span class="sc">+</span> </span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>                                 abv25_g12E) <span class="sc">/</span> total_abv25E) <span class="sc">*</span> <span class="dv">100</span>,</span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Health</span></span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>    <span class="at">Pct_Disabled =</span> ((dis_male_4E <span class="sc">+</span> dis_male_5_17E <span class="sc">+</span> dis_male_18_34E <span class="sc">+</span> dis_male_35_64E <span class="sc">+</span> </span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>                     dis_male_65_74E <span class="sc">+</span> dis_male_75E <span class="sc">+</span> dis_female_4E <span class="sc">+</span> dis_female_5_17E <span class="sc">+</span> </span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>                     dis_female_18_34E <span class="sc">+</span> dis_female_35_64E <span class="sc">+</span> dis_female_65_74E <span class="sc">+</span> </span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>                     dis_female_75E) <span class="sc">/</span> dis_totalE) <span class="sc">*</span> <span class="dv">100</span>,</span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>    <span class="at">Pct_No_Insurance =</span> ((no_ins_dis_18E <span class="sc">+</span> no_ins_xdis_18E <span class="sc">+</span> no_ins_dis_19_64E <span class="sc">+</span> </span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>                         no_ins_xdis_19_64E <span class="sc">+</span> no_ins_dis_65E <span class="sc">+</span> no_ins_xdis_65E) <span class="sc">/</span> ins_totalE) <span class="sc">*</span> <span class="dv">100</span>,</span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Housing</span></span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a>    <span class="at">Pct_Overcrowded_Housing =</span> ((Overcrowded_Housing_ownE <span class="sc">+</span> Overcrowded_Housing_rentE) <span class="sc">/</span> housing_totalE) <span class="sc">*</span> <span class="dv">100</span>,</span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a>    <span class="at">Pct_Cost_Burdened_Housing =</span> ((cost_burdened_housing_30_35E <span class="sc">+</span> cost_burdened_housing_35_40E <span class="sc">+</span> </span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a>                                  cost_burdened_housing_40_50E <span class="sc">+</span> cost_burdened_housing_50_aboveE) <span class="sc">/</span> </span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a>                                  cost_burdened_housing_totalE) <span class="sc">*</span> <span class="dv">100</span>,</span>
+<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Living Conditions</span></span>
+<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a>    <span class="at">Pct_No_Plumbing =</span> (no_plumbingE <span class="sc">/</span> total_housing_plumbingE) <span class="sc">*</span> <span class="dv">100</span>,</span>
+<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a>    <span class="at">Pct_No_Kitchen =</span> ((no_kitchen_ownE <span class="sc">+</span> no_kitchen_rentE) <span class="sc">/</span> total_housing_kitchenE) <span class="sc">*</span> <span class="dv">100</span>,</span>
+<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Digital Divide</span></span>
+<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a>    <span class="at">Pct_No_Computer =</span> (no_computerE <span class="sc">/</span> total_householdsE) <span class="sc">*</span> <span class="dv">100</span>,</span>
+<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a>    <span class="at">Pct_No_Internet =</span> (no_internetE <span class="sc">/</span> total_householdsE) <span class="sc">*</span> <span class="dv">100</span>,</span>
+<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a>    <span class="at">Pct_Internet_No_Subscription =</span> (internet_no_subscriptionE <span class="sc">/</span> total_householdsE) <span class="sc">*</span> <span class="dv">100</span>,</span>
+<span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb1-39"><a href="#cb1-39" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Employment</span></span>
+<span id="cb1-40"><a href="#cb1-40" aria-hidden="true" tabindex="-1"></a>    <span class="at">Pct_Unemployed =</span> (unemployedE <span class="sc">/</span> workforce_totalE) <span class="sc">*</span> <span class="dv">100</span>,</span>
+<span id="cb1-41"><a href="#cb1-41" aria-hidden="true" tabindex="-1"></a>    <span class="at">Pct_Not_In_Labor_Force =</span> (not_in_labor_forceE <span class="sc">/</span> pop_employment_totalE) <span class="sc">*</span> <span class="dv">100</span></span>
+<span id="cb1-42"><a href="#cb1-42" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb1-43"><a href="#cb1-43" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(GEOID, <span class="fu">starts_with</span>(<span class="st">"Pct_"</span>))  <span class="co"># Keep only GEOID and calculated percentages</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <section id="deprivation-cutoffs" class="level1" data-number="4">
 <h1 data-number="4"><span class="header-section-number">4</span> Deprivation Cutoffs</h1>
@@ -275,22 +298,38 @@ Attaching package: 'psych'</code></pre>
 <span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Check for NA values and decide on handling strategy</span></span>
 <span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(deprivation_factors)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code> Pct_Kids_Not_In_School Pct_Overcrowded_Housing Pct_Cost_Burdened_Housing
- Min.   :11.93          Min.   :0.0000          Min.   :  0.00           
- 1st Qu.:71.68          1st Qu.:0.0000          1st Qu.: 34.68           
- Median :75.69          Median :0.0000          Median : 45.13           
- Mean   :75.33          Mean   :0.3091          Mean   : 45.73           
- 3rd Qu.:80.09          3rd Qu.:0.0000          3rd Qu.: 56.67           
- Max.   :97.30          Max.   :7.5419          Max.   :100.00           
- NA's   :4              NA's   :4               NA's   :7                
- Pct_No_Plumbing   Pct_No_Kitchen    Pct_No_Computer  Pct_No_Internet 
- Min.   : 0.0000   Min.   : 0.0000   Min.   : 0.000   Min.   : 0.000  
- 1st Qu.: 0.0000   1st Qu.: 0.0000   1st Qu.: 2.820   1st Qu.: 4.194  
- Median : 0.6113   Median : 0.0000   Median : 5.722   Median : 8.173  
- Mean   : 2.1149   Mean   : 0.7670   Mean   : 7.104   Mean   :10.065  
- 3rd Qu.: 2.5272   3rd Qu.: 0.8996   3rd Qu.: 9.988   3rd Qu.:14.204  
- Max.   :39.0738   Max.   :13.8008   Max.   :40.765   Max.   :45.918  
- NA's   :4         NA's   :4         NA's   :4        NA's   :4       
+<pre><code> Pct_Receiving_PA Pct_Kids_Not_In_School Pct_Youth_Not_In_School_Not_Working
+ Min.   : 0.000   Min.   :11.93          Min.   :  0.000                    
+ 1st Qu.: 1.048   1st Qu.:71.68          1st Qu.:  0.000                    
+ Median : 2.371   Median :75.69          Median :  0.000                    
+ Mean   : 3.301   Mean   :75.33          Mean   :  2.632                    
+ 3rd Qu.: 4.700   3rd Qu.:80.09          3rd Qu.:  0.000                    
+ Max.   :21.964   Max.   :97.30          Max.   :100.000                    
+ NA's   :4        NA's   :4              NA's   :25                         
+ Pct_Adults_No_HighSchool  Pct_Disabled     Pct_No_Insurance
+ Min.   : 0.000           Min.   : 0.3284   Min.   : 0.000  
+ 1st Qu.: 4.378           1st Qu.: 7.4678   1st Qu.: 3.944  
+ Median : 9.984           Median :10.1953   Median : 7.590  
+ Mean   :12.407           Mean   :11.4048   Mean   : 8.976  
+ 3rd Qu.:17.967           3rd Qu.:14.3950   3rd Qu.:12.783  
+ Max.   :52.635           Max.   :37.9172   Max.   :41.686  
+ NA's   :4                NA's   :4         NA's   :4       
+ Pct_Overcrowded_Housing Pct_Cost_Burdened_Housing Pct_No_Plumbing  
+ Min.   :0.0000          Min.   :  0.00            Min.   : 0.0000  
+ 1st Qu.:0.0000          1st Qu.: 34.68            1st Qu.: 0.0000  
+ Median :0.0000          Median : 45.13            Median : 0.6113  
+ Mean   :0.3091          Mean   : 45.73            Mean   : 2.1149  
+ 3rd Qu.:0.0000          3rd Qu.: 56.67            3rd Qu.: 2.5272  
+ Max.   :7.5419          Max.   :100.00            Max.   :39.0738  
+ NA's   :4               NA's   :7                 NA's   :4        
+ Pct_No_Kitchen    Pct_No_Computer  Pct_No_Internet 
+ Min.   : 0.0000   Min.   : 0.000   Min.   : 0.000  
+ 1st Qu.: 0.0000   1st Qu.: 2.820   1st Qu.: 4.194  
+ Median : 0.0000   Median : 5.722   Median : 8.173  
+ Mean   : 0.7670   Mean   : 7.104   Mean   :10.065  
+ 3rd Qu.: 0.8996   3rd Qu.: 9.988   3rd Qu.:14.204  
+ Max.   :13.8008   Max.   :40.765   Max.   :45.918  
+ NA's   :4         NA's   :4        NA's   :4       
  Pct_Internet_No_Subscription Pct_Unemployed   Pct_Not_In_Labor_Force
  Min.   : 0.0000              Min.   : 0.000   Min.   : 5.971        
  1st Qu.: 0.6063              1st Qu.: 3.571   1st Qu.:28.549        
@@ -309,78 +348,118 @@ Attaching package: 'psych'</code></pre>
 Call: fa(r = deprivation_factors, nfactors = 5, rotate = "varimax", 
     fm = "minres")
 Standardized loadings (pattern matrix) based upon correlation matrix
-                               MR1   MR4   MR2   MR5   MR3    h2     u2 com
-Pct_Kids_Not_In_School       -0.09 -0.01  0.02 -0.07  0.63 0.412 0.5879 1.1
-Pct_Overcrowded_Housing       0.03  0.01  0.01  0.27 -0.06 0.077 0.9232 1.2
-Pct_Cost_Burdened_Housing     0.36  0.27  0.06  0.11 -0.15 0.242 0.7576 2.6
-Pct_No_Plumbing               0.19  0.53  0.07 -0.02  0.05 0.322 0.6782 1.3
-Pct_No_Kitchen                0.07  0.09  0.99  0.02  0.03 0.995 0.0047 1.0
-Pct_No_Computer               0.62  0.27  0.10  0.56  0.18 0.817 0.1831 2.6
-Pct_No_Internet               0.61  0.35  0.08  0.55  0.16 0.832 0.1679 2.8
-Pct_Internet_No_Subscription  0.04  0.16  0.12  0.06 -0.01 0.045 0.9547 2.3
-Pct_Unemployed                0.26  0.75 -0.02  0.15 -0.07 0.662 0.3380 1.3
-Pct_Not_In_Labor_Force        0.72  0.26  0.06  0.05 -0.25 0.653 0.3466 1.6
+                                      MR2   MR4   MR1   MR5   MR3    h2     u2
+Pct_Receiving_PA                     0.19  0.41  0.13  0.10 -0.03 0.237 0.7629
+Pct_Kids_Not_In_School              -0.11 -0.01 -0.08  0.05  0.83 0.702 0.2979
+Pct_Youth_Not_In_School_Not_Working  0.04  0.21  0.09 -0.03  0.17 0.084 0.9157
+Pct_Adults_No_HighSchool             0.87  0.19  0.23  0.14 -0.03 0.862 0.1381
+Pct_Disabled                        -0.02  0.46  0.66  0.20  0.17 0.720 0.2796
+Pct_No_Insurance                     0.71  0.20  0.03  0.03  0.00 0.551 0.4493
+Pct_Overcrowded_Housing              0.29  0.01  0.00  0.09 -0.03 0.092 0.9084
+Pct_Cost_Burdened_Housing            0.15  0.28  0.30  0.17 -0.12 0.236 0.7643
+Pct_No_Plumbing                      0.05  0.54  0.13  0.10  0.04 0.320 0.6802
+Pct_No_Kitchen                       0.03  0.13  0.14  0.10  0.08 0.053 0.9465
+Pct_No_Computer                      0.27  0.21  0.30  0.89  0.03 0.997 0.0025
+Pct_No_Internet                      0.35  0.35  0.35  0.61  0.05 0.752 0.2477
+Pct_Internet_No_Subscription         0.08  0.15  0.11  0.02  0.04 0.041 0.9587
+Pct_Unemployed                       0.09  0.70  0.20  0.24 -0.09 0.605 0.3947
+Pct_Not_In_Labor_Force               0.11  0.25  0.72  0.25 -0.21 0.690 0.3098
+                                    com
+Pct_Receiving_PA                    1.8
+Pct_Kids_Not_In_School              1.1
+Pct_Youth_Not_In_School_Not_Working 2.5
+Pct_Adults_No_HighSchool            1.3
+Pct_Disabled                        2.2
+Pct_No_Insurance                    1.2
+Pct_Overcrowded_Housing             1.2
+Pct_Cost_Burdened_Housing           3.5
+Pct_No_Plumbing                     1.2
+Pct_No_Kitchen                      3.5
+Pct_No_Computer                     1.6
+Pct_No_Internet                     3.0
+Pct_Internet_No_Subscription        2.6
+Pct_Unemployed                      1.5
+Pct_Not_In_Labor_Force              1.8
 
-                       MR1  MR4  MR2  MR5  MR3
-SS loadings           1.52 1.22 1.02 0.74 0.56
-Proportion Var        0.15 0.12 0.10 0.07 0.06
-Cumulative Var        0.15 0.27 0.38 0.45 0.51
-Proportion Explained  0.30 0.24 0.20 0.15 0.11
-Cumulative Proportion 0.30 0.54 0.74 0.89 1.00
+                       MR2  MR4  MR1  MR5  MR3
+SS loadings           1.64 1.64 1.42 1.42 0.82
+Proportion Var        0.11 0.11 0.09 0.09 0.05
+Cumulative Var        0.11 0.22 0.31 0.41 0.46
+Proportion Explained  0.24 0.24 0.20 0.20 0.12
+Cumulative Proportion 0.24 0.47 0.68 0.88 1.00
 
-Mean item complexity =  1.8
+Mean item complexity =  2
 Test of the hypothesis that 5 factors are sufficient.
 
-df null model =  45  with the objective function =  2.47 with Chi Square =  3276.86
-df of  the model are 5  and the objective function was  0.01 
+df null model =  105  with the objective function =  4.6 with Chi Square =  6101.43
+df of  the model are 40  and the objective function was  0.09 
 
-The root mean square of the residuals (RMSR) is  0.01 
-The df corrected root mean square of the residuals is  0.02 
+The root mean square of the residuals (RMSR) is  0.02 
+The df corrected root mean square of the residuals is  0.03 
 
-The harmonic n.obs is  1327 with the empirical chi square  5.08  with prob &lt;  0.41 
-The total n.obs was  1332  with Likelihood Chi Square =  13.08  with prob &lt;  0.023 
+The harmonic n.obs is  1325 with the empirical chi square  85.88  with prob &lt;  3.4e-05 
+The total n.obs was  1332  with Likelihood Chi Square =  115.98  with prob &lt;  2.5e-09 
 
-Tucker Lewis Index of factoring reliability =  0.977
-RMSEA index =  0.035  and the 90 % confidence intervals are  0.012 0.059
-BIC =  -22.89
+Tucker Lewis Index of factoring reliability =  0.967
+RMSEA index =  0.038  and the 90 % confidence intervals are  0.03 0.046
+BIC =  -171.8
 Fit based upon off diagonal values = 1
 Measures of factor score adequacy             
-                                                   MR1  MR4  MR2  MR5  MR3
-Correlation of (regression) scores with factors   0.80 0.80 1.00 0.72 0.71
-Multiple R square of scores with factors          0.65 0.63 0.99 0.52 0.51
-Minimum correlation of possible factor scores     0.29 0.27 0.98 0.04 0.02</code></pre>
+                                                   MR2  MR4  MR1  MR5  MR3
+Correlation of (regression) scores with factors   0.92 0.80 0.82 0.98 0.85
+Multiple R square of scores with factors          0.85 0.65 0.66 0.96 0.72
+Minimum correlation of possible factor scores     0.71 0.30 0.33 0.93 0.44</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot the factor loadings for a visual representation</span></span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="fu">fa.diagram</span>(fa_result)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(fa_result<span class="sc">$</span>values)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> [1]  4.085341333  1.108575875  0.826211308  0.597304147  0.327840052
+ [6]  0.144707267  0.082097939  0.053076216  0.025620213  0.021642830
+[11] -0.009223714 -0.043425297 -0.052486179 -0.070706753 -0.153102481</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot the factor loadings for a visual representation</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="fu">fa.diagram</span>(fa_result)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <p><img src="multidimensional_poverty_files/figure-html/factor-1.png" class="img-fluid" width="672"></p>
 </div>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Parallel</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="fu">fa.parallel</span>(deprivation_factors, <span class="at">fm =</span> <span class="st">"minres"</span>, <span class="at">fa =</span> <span class="st">"fa"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="multidimensional_poverty_files/figure-html/factor-2.png" class="img-fluid" width="672"></p>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Parallel analysis suggests that the number of factors =  5  and the number of components =  NA </code></pre>
+</div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Examine factor loadings</span></span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>loadings <span class="ot">&lt;-</span> fa_result<span class="sc">$</span>loadings</span>
-<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Print factor loadings for interpretation</span></span>
-<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(loadings)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Examine factor loadings</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>loadings <span class="ot">&lt;-</span> fa_result<span class="sc">$</span>loadings</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Print factor loadings for interpretation</span></span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(loadings)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Loadings:
-                             MR1    MR4    MR2    MR5    MR3   
-Pct_Kids_Not_In_School                                    0.632
-Pct_Overcrowded_Housing                            0.267       
-Pct_Cost_Burdened_Housing     0.360  0.271         0.114 -0.151
-Pct_No_Plumbing               0.186  0.528                     
-Pct_No_Kitchen                              0.990              
-Pct_No_Computer               0.621  0.274         0.562  0.178
-Pct_No_Internet               0.610  0.350         0.552  0.162
-Pct_Internet_No_Subscription         0.160  0.120              
-Pct_Unemployed                0.256  0.753         0.154       
-Pct_Not_In_Labor_Force        0.717  0.264               -0.254
+                                    MR2    MR4    MR1    MR5    MR3   
+Pct_Receiving_PA                     0.193  0.414  0.131              
+Pct_Kids_Not_In_School              -0.106                       0.826
+Pct_Youth_Not_In_School_Not_Working         0.212                0.168
+Pct_Adults_No_HighSchool             0.868  0.189  0.225  0.143       
+Pct_Disabled                                0.465  0.659  0.200  0.173
+Pct_No_Insurance                     0.714  0.199                     
+Pct_Overcrowded_Housing              0.285                            
+Pct_Cost_Burdened_Housing            0.147  0.280  0.301  0.173 -0.123
+Pct_No_Plumbing                             0.538  0.130  0.100       
+Pct_No_Kitchen                              0.127  0.143  0.102       
+Pct_No_Computer                      0.274  0.208  0.300  0.888       
+Pct_No_Internet                      0.350  0.354  0.352  0.615       
+Pct_Internet_No_Subscription                0.149  0.107              
+Pct_Unemployed                              0.702  0.202  0.236       
+Pct_Not_In_Labor_Force               0.106  0.246  0.716  0.248 -0.211
 
-                 MR1   MR4   MR2   MR5   MR3
-SS loadings    1.517 1.221 1.023 0.739 0.558
-Proportion Var 0.152 0.122 0.102 0.074 0.056
-Cumulative Var 0.152 0.274 0.376 0.450 0.506</code></pre>
+                 MR2   MR4   MR1   MR5   MR3
+SS loadings    1.643 1.636 1.423 1.418 0.824
+Proportion Var 0.110 0.109 0.095 0.095 0.055
+Cumulative Var 0.110 0.219 0.313 0.408 0.463</code></pre>
 </div>
 </div>
 
