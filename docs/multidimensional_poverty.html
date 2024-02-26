@@ -462,6 +462,28 @@ Proportion Var 0.110 0.109 0.095 0.095 0.055
 Cumulative Var 0.110 0.219 0.313 0.408 0.463</code></pre>
 </div>
 </div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculate factor scores for each unit of analysis</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>factor_scores <span class="ot">&lt;-</span> <span class="fu">factor.scores</span>(deprivation_percentages[<span class="sc">-</span><span class="dv">1</span>], fa_result)<span class="sc">$</span>scores  <span class="co"># Excluding 'GEOID' for calculation</span></span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Convert the factor scores into a data frame</span></span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>factor_scores_df <span class="ot">&lt;-</span> <span class="fu">as.data.frame</span>(factor_scores)</span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Add the 'GEOID' back to the factor scores data frame</span></span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a>factor_scores_df<span class="sc">$</span>GEOID <span class="ot">&lt;-</span> deprivation_percentages<span class="sc">$</span>GEOID</span>
+<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a><span class="co"># View the head of the factor scores data frame</span></span>
+<span id="cb17-11"><a href="#cb17-11" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(factor_scores_df)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>         MR2         MR4        MR1         MR5        MR3       GEOID
+1  0.1218242  0.73414510 -0.7521446 -0.07270834  1.6510993 17031010100
+2  0.8293460 -0.74058076 -0.1762981  0.64774589 -1.4483041 17031010201
+3  0.6194043  0.03677482  0.5746899 -1.01599898  0.4630609 17031010202
+4  0.3556673 -0.10069391  0.4394115 -1.22090602  1.4988615 17031010300
+5 -1.2584417 -1.22838571  0.9470750  1.88082056 -2.4596329 17031010400
+6 -1.1159884  0.81837396 -0.4993244 -0.01319102  0.9467878 17031010501</code></pre>
+</div>
+</div>
 
 
 </section>

@@ -254,3 +254,87 @@ print(loadings)
 
 
 ```
+```{r viz2_etl, echo = TRUE, include = FALSE}
+## Set your desired variables
+variables <- c(Total_Pop = "B01003_001",
+               Poverty = "B17001_002")
+
+# Pull ACS data for census tracts in Cook County (Chicago)
+chicago_tracts_poverty <- get_acs(geography = "tract",
+                                  variables = variables,
+                                  state = "IL",
+                                  county = "Cook",
+                                  geometry = TRUE,
+                                  output = "wide",
+                                  year = 2022,
+                                  survey = "acs5")
+
+# Calculate the poverty rate as a percentage
+chicago_tracts_poverty <- chicago_tracts_poverty %>%
+  mutate(poverty_rate = (PovertyE / Total_PopE) * 100)
+```
+
+```{r factor_scpres}
+# Calculate factor scores for each unit of analysis
+factor_scores <- factor.scores(deprivation_percentages[-1], fa_result)$scores  # Excluding 'GEOID' for calculation
+
+# Convert the factor scores into a data frame
+factor_scores_df <- as.data.frame(factor_scores)
+
+# Add the 'GEOID' back to the factor scores data frame
+factor_scores_df$GEOID <- deprivation_percentages$GEOID
+
+# View the head of the factor scores data frame
+head(factor_scores_df)
+```
+
+```{r interactive_map}
+library(shiny)
+library(leaflet)
+
+merged_data <- left_join(chicago_tracts_poverty, factor_scores_df, by = "GEOID")
+# Define UI
+ui <- fluidPage(
+  titlePanel("Interactive Map of MR Factors"),
+  sidebarLayout(
+    sidebarPanel(
+      selectInput("selected_MR", "Select MR Factor:", 
+                  choices = c("MR2", "MR4", "MR1", "MR5", "MR3"))
+    ),
+    mainPanel(
+      leafletOutput("interactiveMap")
+    )
+  )
+)
+
+# Define server logic
+server <- function(input, output) {
+  output$interactiveMap <- renderLeaflet({
+    # Dynamically select the column based on input$selected_MR
+    selected_col <- reactive({
+      merged_data[[input$selected_MR]]
+    })
+
+    # Create a reactive expression for the color palette based on selected MR values
+    color_pal <- reactive({
+      colorQuantile(palette = "YlOrRd", domain = selected_col(), n = 5)
+    })
+
+    leaflet(data = merged_data) %>%
+      addProviderTiles(providers$CartoDB.Positron) %>%
+      addPolygons(
+        fillColor = ~color_pal()(selected_col()),  # Apply the dynamic color palette
+        weight = 1,
+        color = "#BDBDC3",
+        fillOpacity = 0.8,
+        popup = ~paste(GEOID, "<br>", input$selected_MR, " Score: ", round(selected_col(), 2))
+      ) %>%
+      setView(lng = mean(c(-87.9, -87.5)), lat = mean(c(41.6, 42.0)), zoom = 11)
+  })
+}
+
+# Run the app
+shinyApp(ui, server)
+
+
+```
