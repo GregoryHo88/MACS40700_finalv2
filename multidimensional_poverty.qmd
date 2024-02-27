@@ -338,3 +338,94 @@ shinyApp(ui, server)
 
 
 ```
+
+
+```{r viz1, fig.width=14, fig.height=7}
+library(reshape2)
+library(ggplot2)
+
+# Extract loadings matrix
+loadings_matrix <- fa_result$loadings
+
+# Assuming the last 3 rows are SS loadings, prop. var., and cum. var., remove them
+loadings_matrix_clean <- loadings_matrix[1:(nrow(loadings_matrix)), ]
+
+# Convert clean loadings matrix to a dataframe
+loadings_df <- as.data.frame(loadings_matrix_clean)
+
+# Add row names as a new column for variable names
+loadings_df$Variable <- rownames(loadings_df)
+
+# Define the order
+Ord <- rev(c("Pct_Adults_No_HighSchool",
+         "Pct_No_Insurance",
+         "Pct_Unemployed",
+         "Pct_No_Plumbing",
+         "Pct_Receiving_PA",
+         "Pct_Not_In_Labor_Force",
+         "Pct_Disabled",
+         "Pct_No_Computer",
+         "Pct_No_Internet",
+         "Pct_Cost_Burdened_Housing",
+         "Pct_Kids_Not_In_School",
+         "Pct_Internet_No_Subscription",
+         "Pct_Overcrowded_Housing",
+         "Pct_Youth_Not_In_School_Not_Working",
+         "Pct_No_Kitchen"
+         ))
+
+# Set the factor levels based on the order
+loadings_df$Variable <- factor(loadings_df$Variable, levels = Ord)
+
+# Rename the variables
+loadings_df <- loadings_df %>%
+  rename(
+    'Adults 25 above that did not finish schooling' = Pct_Adults_No_HighSchool,
+    'Adults without health insurance' = Pct_No_Insurance,
+    'Unemployed' = Pct_Unemployed,
+    'No Plumbing' = Pct_No_Plumbing,
+    'Receiving public assistance' = Pct_Receiving_PA,
+    'Not in Labor Force' = Pct_Not_In_Labor_Force,
+    'Disabled' = Pct_Disabled,
+    'No Computer' = Pct_No_Computer,
+    'No Internet Access' = Pct_No_Internet,
+    'House-Cost burdened' = Pct_Cost_Burdened_Housing,
+    'Kids not enrolled in school' = Pct_Kids_Not_In_School,
+    'No internet subscription' = Pct_Internet_No_Subscription,
+    'House Overcrowded' = Pct_Overcrowded_Housing,
+    'Youth neither attending school nor work' = Pct_Youth_Not_In_School_Not_Working,
+    'No kitchen facility' = Pct_No_Kitchen
+  )
+
+
+# Optionally rename the factor columns
+# This depends on how many factors you have
+colnames(loadings_df)[1:ncol(loadings_df)-1] <- c("Educational and Health",
+                                                  "Employment & Housing Condition",
+                                                  "Labor & Housing Cost",
+                                                  "Digital Divide",
+                                                  "School Attendance")
+
+# Melt the dataframe
+loadings_long <- melt(loadings_df, id.vars = "Variable", variable.name = "Factor", value.name = "Loading")
+
+# Plot
+library("colorspace")
+
+ggplot(loadings_long, aes(Variable, abs(Loading), fill=Loading)) + 
+  facet_wrap(~ Factor, nrow=1) + 
+  geom_bar(stat="identity") + 
+  coord_flip() + 
+  scale_fill_continuous_diverging(palette = "Cyan-Mage", l1 = 30, l2 = 100, p1 = .9, p2 = 1.2) +
+  labs(x= "Dimension of Deprivation", y = "Loading Strength", fill = "Loading Strength") +
+  theme_bw(base_size=10) +
+  theme(
+    strip.background = element_rect(fill = "lightgray", size = 1.25),
+    strip.text = element_text(size = 9),
+    axis.title.y = element_blank(),
+    axis.text.y = element_text(size = 10),
+    axis.title.x = element_text(size = 10),
+    panel.spacing = unit(0.33, "lines"), # adjust spacing between facets
+    plot.margin = margin(8, 4, 4, 4) # adjust overall plot margins (top, right, bottom, left)
+  )
+```
