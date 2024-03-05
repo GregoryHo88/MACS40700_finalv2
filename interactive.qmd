@@ -1,0 +1,290 @@
+---
+title: "interactive MDPI"
+server: shiny
+---
+
+```{r dependencies, echo = FALSE, include = FALSE}
+# Installing Required Packages
+# Uncomment the lines below to install packages if they are not already installed.
+
+#install.packages(tidycensus)
+#install.packages(waffle)
+
+# Load the necessary libraries
+library(tidyverse)
+library(tidycensus)
+library(ggplot2)
+library(dplyr)
+library(waffle)
+library(patchwork)
+library(psych)
+library(reshape2)
+library(colorspace)
+```
+
+```{r viz3_etl, echo = FALSE, include = FALSE}
+
+# Define ACS variables for each indicator of deprivation
+variables_deprivation <- c(
+  # Income
+  ## Percentage below poverty level
+  poverty_total = "B17001_001",
+  total_below_poverty = "B17001_002",
+  
+  ## Percentage receiving public assistance 
+  recieve_pa_total = "B19057_001",
+  total_recieve_pa = "B19057_002",
+  
+  # Education
+  ## Percentage of kids not in school
+  kids_Not_In_School = "B14001_010",
+  kids_total = "B14001_001",
+  
+  ## Youth Not Attending School and Not Working
+  youth_total = "B14005_001",
+  youth_male_xschool_unemployed = "B14005_014",
+  youth_male_xschool_xlf = "B14005_015",
+  youth_female_xschool_unemployed = "B14005_028",
+  youth_female_xschool_xlf = "B14005_029",
+  
+  ## Percentage of adults 25 above that did not finish schooling
+  total_abv25 = "B15003_001",
+  abv25_no_school = "B15003_002",
+  abv25_nursery = "B15003_003",
+  abv25_kindergarten = "B15003_004",
+  abv25_g1 = "B15003_005",
+  abv25_g2 = "B15003_006",
+  abv25_g3 = "B15003_007",
+  abv25_g4 = "B15003_008",
+  abv25_g5 = "B15003_009",
+  abv25_g6 = "B15003_010",
+  abv25_g7 = "B15003_011",
+  abv25_g8 = "B15003_012",
+  abv25_g9 = "B15003_013",
+  abv25_g10 = "B15003_014",
+  abv25_g11 = "B15003_015",
+  abv25_g12 = "B15003_016",
+  
+  # Health
+  ## Disability Status
+  dis_total = "B18101_001",
+  dis_male_4 = "B18101_004",
+  dis_male_5_17 = "B18101_007",
+  dis_male_18_34 = "B18101_010",
+  dis_male_35_64 = "B18101_013",
+  dis_male_65_74 = "B18101_016",
+  dis_male_75 = "B18101_019",
+  dis_female_4 = "B18101_023",
+  dis_female_5_17 = "B18101_026",
+  dis_female_18_34 = "B18101_029",
+  dis_female_35_64 = "B18101_032",
+  dis_female_65_74 = "B18101_035",
+  dis_female_75 = "B18101_038",
+  
+  ## Insurance
+  # Placeholder for health insurance variables - to be completed
+  # B27001_011,B27001_014,B27001_017,B27001_020,B27001_023,B27001_026
+  ins_total = "B18135_001",
+  no_ins_dis_18 = "B18135_007",
+  no_ins_xdis_18 = "B18135_012",
+  no_ins_dis_19_64 = "B18135_018",
+  no_ins_xdis_19_64 = "B18135_023",
+  no_ins_dis_65 = "B18135_029",
+  no_ins_xdis_65 = "B18135_034",
+    
+  # Housing
+  Overcrowded_Housing_own = "B25014_007",
+  Overcrowded_Housing_rent = "B25014_013",
+  housing_total = "B25002_001",
+  cost_burdened_housing_total = "B25070_001",
+  cost_burdened_housing_30_35 = "B25070_007",
+  cost_burdened_housing_35_40 = "B25070_008",
+  cost_burdened_housing_40_50 = "B25070_009",
+  cost_burdened_housing_50_above = "B25070_010",
+  
+  # Living Conditions
+  ## Percent without access to <Facility>
+  no_plumbing = "B25047_003",
+  total_housing_plumbing = "B25047_001",
+  no_kitchen_own = "B25053_004",
+  no_kitchen_rent = "B25053_007",
+  total_housing_kitchen = "B25053_001",
+  
+  # Digital Divide
+  ## Percent without access to <Technology/Infrastructure>
+  no_computer = "B28001_011",
+  total_households = "B28001_001",
+  no_internet = "B28002_013",
+  internet_no_subscription = "B28002_012",
+  
+  # Employment
+  ## Percent Unemployed, Percent Not in Labor Force
+  unemployed = "B23025_005",
+  workforce_total = "B23025_002",
+  not_in_labor_force = "B23025_007",
+  pop_employment_total = "B23025_001"
+  
+)
+
+# Pull data for Chicago at the tract level
+chicago_data_deprivation <- get_acs(geography = "tract",
+                                    variables = variables_deprivation,
+                                    state = "IL",
+                                    county = "Cook",
+                                    output = "wide",
+                                    year = 2022,
+                                    survey = "acs5")
+```
+
+```{r viz1_processing, echo = FALSE, include = FALSE}
+deprivation_percentages <- chicago_data_deprivation %>%
+  mutate(
+    # Income
+    #Pct_Below_Poverty = (total_below_povertyE / poverty_totalE) * 100,
+    Pct_Receiving_PA = (total_recieve_paE / recieve_pa_totalE) * 100,
+    
+    # Education
+    Pct_Kids_Not_In_School = (kids_Not_In_SchoolE / kids_totalE) * 100,
+    Pct_Youth_Not_In_School_Not_Working = ((youth_male_xschool_unemployedE + youth_male_xschool_xlfE + 
+                                            youth_female_xschool_unemployedE + youth_female_xschool_xlfE) / youth_totalE) * 100,
+    Pct_Adults_No_HighSchool = ((abv25_no_schoolE + abv25_nurseryE + abv25_kindergartenE + abv25_g1E + 
+                                 abv25_g2E + abv25_g3E + abv25_g4E + abv25_g5E + abv25_g6E + 
+                                 abv25_g7E + abv25_g8E + abv25_g9E + abv25_g10E + abv25_g11E + 
+                                 abv25_g12E) / total_abv25E) * 100,
+    
+    # Health
+    Pct_Disabled = ((dis_male_4E + dis_male_5_17E + dis_male_18_34E + dis_male_35_64E + 
+                     dis_male_65_74E + dis_male_75E + dis_female_4E + dis_female_5_17E + 
+                     dis_female_18_34E + dis_female_35_64E + dis_female_65_74E + 
+                     dis_female_75E) / dis_totalE) * 100,
+    Pct_No_Insurance = ((no_ins_dis_18E + no_ins_xdis_18E + no_ins_dis_19_64E + 
+                         no_ins_xdis_19_64E + no_ins_dis_65E + no_ins_xdis_65E) / ins_totalE) * 100,
+    
+    # Housing
+    Pct_Overcrowded_Housing = ((Overcrowded_Housing_ownE + Overcrowded_Housing_rentE) / housing_totalE) * 100,
+    Pct_Cost_Burdened_Housing = ((cost_burdened_housing_30_35E + cost_burdened_housing_35_40E + 
+                                  cost_burdened_housing_40_50E + cost_burdened_housing_50_aboveE) / 
+                                  cost_burdened_housing_totalE) * 100,
+    
+    # Living Conditions
+    Pct_No_Plumbing = (no_plumbingE / total_housing_plumbingE) * 100,
+    Pct_No_Kitchen = ((no_kitchen_ownE + no_kitchen_rentE) / total_housing_kitchenE) * 100,
+    
+    # Digital Divide
+    Pct_No_Computer = (no_computerE / total_householdsE) * 100,
+    Pct_No_Internet = (no_internetE / total_householdsE) * 100,
+    Pct_Internet_No_Subscription = (internet_no_subscriptionE / total_householdsE) * 100,
+    
+    # Employment
+    Pct_Unemployed = (unemployedE / workforce_totalE) * 100,
+    Pct_Not_In_Labor_Force = (not_in_labor_forceE / pop_employment_totalE) * 100
+  ) %>%
+  select(GEOID, starts_with("Pct_"))  # Keep only GEOID and calculated percentages
+```
+
+```{r factor, echo = FALSE, include = FALSE}
+deprivation_factors <- deprivation_percentages %>% 
+  select(-GEOID) %>%  # FA requires exclusion of GEOID, add back later 
+  select_if(is.numeric)
+
+fa_result <- fa(deprivation_factors, nfactors = 5, rotate = "varimax", fm = "minres")
+
+```
+
+```{r viz2_etl, echo = TRUE, include = FALSE}
+variables <- c(Total_Pop = "B01003_001",
+               Poverty = "B17001_002")
+
+# Pull ACS data for census tracts in Cook County (Chicago)
+chicago_tracts_poverty <- get_acs(geography = "tract",
+                                  variables = variables,
+                                  state = "IL",
+                                  county = "Cook",
+                                  geometry = TRUE,
+                                  output = "wide",
+                                  year = 2022,
+                                  survey = "acs5")
+
+# Calculate the poverty rate as a percentage
+chicago_tracts_poverty <- chicago_tracts_poverty %>%
+  mutate(poverty_rate = (PovertyE / Total_PopE) * 100)
+```
+
+```{r factor_scpres}
+# Calculate factor scores for each unit of analysis
+factor_scores <- factor.scores(deprivation_percentages[-1], fa_result)$scores  # Excluding 'GEOID' for calculation
+
+# Convert into df
+factor_scores_df <- as.data.frame(factor_scores)
+
+# Add 'GEOID' back
+factor_scores_df$GEOID <- deprivation_percentages$GEOID
+
+# Test
+head(factor_scores_df)
+```
+
+```{r interactive_map}
+library(shiny)
+library(leaflet)
+
+# Renaming the MR factors to align with the op-ed (better readability)
+factor_names <- c(
+  "Educational and Health Deprivation", 
+  "Employment and Housing Condition", 
+  "Labor Force Participation and Housing Affordability", 
+  "The Digital Divide", 
+  "School Attendance"
+)
+
+names(factor_scores_df) <- c(factor_names, "GEOID")
+
+merged_data <- left_join(chicago_tracts_poverty, factor_scores_df, by = "GEOID")
+
+# Adding the poverty rate as a selectable option (for baseline comparison)
+ui <- fluidPage(
+  titlePanel("Interactive Map of Deprivation Factors"),
+  sidebarLayout(
+    sidebarPanel(
+      selectInput("selected_factor", "Select Factor:", 
+                  choices = c("Poverty Rate" = "poverty_rate", factor_names))
+    ),
+    mainPanel(
+      leafletOutput("interactiveMap", height = "80vh")
+    )
+  )
+)
+
+# Define server logic
+server <- function(input, output) {
+  output$interactiveMap <- renderLeaflet({
+    # Define the column for the selected factor
+    selected_col <- reactive({
+      merged_data[[input$selected_factor]]
+    })
+
+    # Create a reactive expression for the color palette
+    color_pal <- reactive({
+      if (input$selected_factor == "Poverty Rate") {
+        colorBin(palette = "YlOrRd", domain = selected_col(), bins = 5)
+      } else {
+        colorQuantile(palette = "YlOrRd", domain = selected_col(), n = 5)
+      }
+    })
+
+    leaflet(data = merged_data) %>%
+      addProviderTiles(providers$CartoDB.Positron) %>%
+      addPolygons(
+        fillColor = ~color_pal()(selected_col()), 
+        weight = 1,
+        color = "#BDBDC3",
+        fillOpacity = 0.8,
+        popup = ~paste(GEOID, "<br>", input$selected_factor, " Score: ", round(selected_col(), 2))
+      ) %>%
+      setView(lng = -87.8, lat = 41.8, zoom = 9)
+  })
+}
+
+# Run the app
+shinyApp(ui, server)
+```

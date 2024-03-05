@@ -8,8 +8,6 @@ book:
   date: "19/02/2024"
   chapters:
     - index.qmd
-    - intro.qmd
-    - descriptive_stats.qmd
     - multidimensional_poverty.qmd
     - summary.qmd
     - references.qmd
@@ -19,6 +17,13 @@ bibliography: references.bib
 format:
   html:
     theme: cosmo
+    toc: true
+    navbar:
+      left:
+        - text: "Home"
+          href: index.qmd
+        - text: "Methodology"
+          href: multidimensional_poverty.qmd
   pdf:
     documentclass: scrreprt
 

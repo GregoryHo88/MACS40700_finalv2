@@ -1,19 +1,349 @@
-# Preface {.unnumbered}
+---
+title: "Exploring Multidimensional Poverty in the Chicago Area"
+---
 
-This project is seeks to investigate poverty in Chicago, and the various deprivations that households face. Data visualizations were produced using data published in the American Community Survey 5-Year Estimates as at 2022, compiled by the US Census Bureau.
+Within the vibrant urban tapestry of Chicago, characterized by its architectural prowess and economic vitality, lies a less visible but critically important dimension of urban life: multidimensional poverty. This phenomenon extends beyond the traditional income-based assessments, to encompass a range of deprivations that affect households.
 
-## Instructions to Execute Code
+This commentary draws upon the latest empirical data from the ACS 5-Year Estimates for 2022, employing a methodical approach ([more details here](multidimensional_poverty.qmd)) to identify and quantify 15 distinct indicators of deprivation. These indicators span critical domains such as health, education, employment, housing, and digital accessibility, thereby offering a comprehensive view of the multifaceted nature of poverty.
 
-To reproduce this analysis, an API key from the US Census Bureau is required. Follow these steps to obtain and use the key:
+The rationale for adopting a multidimensional perspective on poverty is grounded in contemporary scholarly discourse, which advocates for a more nuanced understanding of poverty that reflects the complex realities of urban deprivation. This approach acknowledges that poverty is not merely a lack of financial resources but encompasses a broader spectrum of unmet needs and rights, including but not limited to, adequate healthcare, quality education, stable employment, secure housing, and equitable access to information technology.
 
-1.) Request an API key by visiting this [page](https://api.census.gov/data/key_signup.html) to request a key
+```{r dependencies, echo = FALSE, include = FALSE}
+# Installing Required Packages
+# packages <- c("tidycensus", "waffle", "ggplot2", "dplyr", "patchwork", "psych", "reshape2", "colorspace")
+# sapply(packages, function(p) if(!require(p, character.only = TRUE)) install.packages(p))
 
-2.) Activate the key using the link sent to your email.
+# Load the necessary libraries
+library(tidyverse)
+library(tidycensus)
+library(ggplot2)
+library(dplyr)
+library(waffle)
+library(patchwork)
+library(psych)
+library(reshape2)
+library(colorspace)
 
-3.) Store the key as an environment variable in your project for secure access.
+```
 
-Note: Detailed instructions and the code for the analysis are provided in the accompanying R Markdown document.
+```{r viz1_etl, echo = FALSE, include = FALSE}
+# Define ACS variables for each indicator of deprivation
+variables_deprivation <- c(
+  # Income
+  ## Percentage below poverty level
+  poverty_total = "B17001_001",
+  total_below_poverty = "B17001_002",
+  
+  ## Percentage receiving public assistance 
+  recieve_pa_total = "B19057_001",
+  total_recieve_pa = "B19057_002",
+  
+  # Education
+  ## Percentage of kids not in school
+  kids_Not_In_School = "B14001_010",
+  kids_total = "B14001_001",
+  
+  ## Youth Not Attending School and Not Working
+  youth_total = "B14005_001",
+  youth_male_xschool_unemployed = "B14005_014",
+  youth_male_xschool_xlf = "B14005_015",
+  youth_female_xschool_unemployed = "B14005_028",
+  youth_female_xschool_xlf = "B14005_029",
+  
+  ## Percentage of adults 25 above that did not finish schooling
+  total_abv25 = "B15003_001",
+  abv25_no_school = "B15003_002",
+  abv25_nursery = "B15003_003",
+  abv25_kindergarten = "B15003_004",
+  abv25_g1 = "B15003_005",
+  abv25_g2 = "B15003_006",
+  abv25_g3 = "B15003_007",
+  abv25_g4 = "B15003_008",
+  abv25_g5 = "B15003_009",
+  abv25_g6 = "B15003_010",
+  abv25_g7 = "B15003_011",
+  abv25_g8 = "B15003_012",
+  abv25_g9 = "B15003_013",
+  abv25_g10 = "B15003_014",
+  abv25_g11 = "B15003_015",
+  abv25_g12 = "B15003_016",
+  
+  # Health
+  ## Disability Status
+  dis_total = "B18101_001",
+  dis_male_4 = "B18101_004",
+  dis_male_5_17 = "B18101_007",
+  dis_male_18_34 = "B18101_010",
+  dis_male_35_64 = "B18101_013",
+  dis_male_65_74 = "B18101_016",
+  dis_male_75 = "B18101_019",
+  dis_female_4 = "B18101_023",
+  dis_female_5_17 = "B18101_026",
+  dis_female_18_34 = "B18101_029",
+  dis_female_35_64 = "B18101_032",
+  dis_female_65_74 = "B18101_035",
+  dis_female_75 = "B18101_038",
+  
+  ## Insurance
+  # Placeholder for health insurance variables - to be completed
+  # B27001_011,B27001_014,B27001_017,B27001_020,B27001_023,B27001_026
+  ins_total = "B18135_001",
+  no_ins_dis_18 = "B18135_007",
+  no_ins_xdis_18 = "B18135_012",
+  no_ins_dis_19_64 = "B18135_018",
+  no_ins_xdis_19_64 = "B18135_023",
+  no_ins_dis_65 = "B18135_029",
+  no_ins_xdis_65 = "B18135_034",
+    
+  # Housing
+  Overcrowded_Housing_own = "B25014_007",
+  Overcrowded_Housing_rent = "B25014_013",
+  housing_total = "B25002_001",
+  cost_burdened_housing_total = "B25070_001",
+  cost_burdened_housing_30_35 = "B25070_007",
+  cost_burdened_housing_35_40 = "B25070_008",
+  cost_burdened_housing_40_50 = "B25070_009",
+  cost_burdened_housing_50_above = "B25070_010",
+  
+  # Living Conditions
+  ## Percent without access to <Facility>
+  no_plumbing = "B25047_003",
+  total_housing_plumbing = "B25047_001",
+  no_kitchen_own = "B25053_004",
+  no_kitchen_rent = "B25053_007",
+  total_housing_kitchen = "B25053_001",
+  
+  # Digital Divide
+  ## Percent without access to <Technology/Infrastructure>
+  no_computer = "B28001_011",
+  total_households = "B28001_001",
+  no_internet = "B28002_013",
+  internet_no_subscription = "B28002_012",
+  
+  # Employment
+  ## Percent Unemployed, Percent Not in Labor Force
+  unemployed = "B23025_005",
+  workforce_total = "B23025_002",
+  not_in_labor_force = "B23025_007",
+  pop_employment_total = "B23025_001"
+  
+)
 
-## Credits
+# Pull data for Chicago at the tract level
+chicago_data_deprivation <- get_acs(geography = "tract",
+                                    variables = variables_deprivation,
+                                    state = "IL",
+                                    county = "Cook",
+                                    output = "wide",
+                                    year = 2022,
+                                    survey = "acs5")
+```
 
-To be filled later
+```{r viz1_processing, echo = FALSE, include = FALSE}
+
+deprivation_percentages <- chicago_data_deprivation %>%
+  mutate(
+    # Income
+    #Pct_Below_Poverty = (total_below_povertyE / poverty_totalE) * 100,
+    Pct_Receiving_PA = (total_recieve_paE / recieve_pa_totalE) * 100,
+    
+    # Education
+    Pct_Kids_Not_In_School = (kids_Not_In_SchoolE / kids_totalE) * 100,
+    Pct_Youth_Not_In_School_Not_Working = ((youth_male_xschool_unemployedE + youth_male_xschool_xlfE + 
+                                            youth_female_xschool_unemployedE + youth_female_xschool_xlfE) / youth_totalE) * 100,
+    Pct_Adults_No_HighSchool = ((abv25_no_schoolE + abv25_nurseryE + abv25_kindergartenE + abv25_g1E + 
+                                 abv25_g2E + abv25_g3E + abv25_g4E + abv25_g5E + abv25_g6E + 
+                                 abv25_g7E + abv25_g8E + abv25_g9E + abv25_g10E + abv25_g11E + 
+                                 abv25_g12E) / total_abv25E) * 100,
+    
+    # Health
+    Pct_Disabled = ((dis_male_4E + dis_male_5_17E + dis_male_18_34E + dis_male_35_64E + 
+                     dis_male_65_74E + dis_male_75E + dis_female_4E + dis_female_5_17E + 
+                     dis_female_18_34E + dis_female_35_64E + dis_female_65_74E + 
+                     dis_female_75E) / dis_totalE) * 100,
+    Pct_No_Insurance = ((no_ins_dis_18E + no_ins_xdis_18E + no_ins_dis_19_64E + 
+                         no_ins_xdis_19_64E + no_ins_dis_65E + no_ins_xdis_65E) / ins_totalE) * 100,
+    
+    # Housing
+    Pct_Overcrowded_Housing = ((Overcrowded_Housing_ownE + Overcrowded_Housing_rentE) / housing_totalE) * 100,
+    Pct_Cost_Burdened_Housing = ((cost_burdened_housing_30_35E + cost_burdened_housing_35_40E + 
+                                  cost_burdened_housing_40_50E + cost_burdened_housing_50_aboveE) / 
+                                  cost_burdened_housing_totalE) * 100,
+    
+    # Living Conditions
+    Pct_No_Plumbing = (no_plumbingE / total_housing_plumbingE) * 100,
+    Pct_No_Kitchen = ((no_kitchen_ownE + no_kitchen_rentE) / total_housing_kitchenE) * 100,
+    
+    # Digital Divide
+    Pct_No_Computer = (no_computerE / total_householdsE) * 100,
+    Pct_No_Internet = (no_internetE / total_householdsE) * 100,
+    Pct_Internet_No_Subscription = (internet_no_subscriptionE / total_householdsE) * 100,
+    
+    # Employment
+    Pct_Unemployed = (unemployedE / workforce_totalE) * 100,
+    Pct_Not_In_Labor_Force = (not_in_labor_forceE / pop_employment_totalE) * 100
+  ) %>%
+  select(GEOID, starts_with("Pct_"))  # Keep only GEOID and calculated percentages
+```
+
+```{r factor, echo = FALSE, include = FALSE}
+# Exclude non-numeric variables if any
+deprivation_factors <- deprivation_percentages %>% 
+  select(-GEOID) %>%  # Exclude GEOID or any other non-numeric variables
+  select_if(is.numeric)  # Select only numeric columns
+
+fa_result <- fa(deprivation_factors, nfactors = 5, rotate = "varimax", fm = "minres")
+
+```
+
+**Figure 1: Multidimensional Poverty Indicators in Chicago: A Factor Analysis**
+
+```{r viz1, echo=FALSE, include=TRUE, fig.width=14, fig.height=8}
+# Extract loadings matrix
+loadings_matrix <- fa_result$loadings
+
+# Assuming the last 3 rows are SS loadings, prop. var., and cum. var., remove them
+loadings_matrix_clean <- loadings_matrix[1:(nrow(loadings_matrix)), ]
+
+# Convert clean loadings matrix to a dataframe
+loadings_df <- as.data.frame(loadings_matrix_clean)
+
+# Add row names as a new column for variable names
+loadings_df$Variable <- rownames(loadings_df)
+
+# Define the order
+Ord <- rev(c("Pct_Adults_No_HighSchool",
+         "Pct_No_Insurance",
+         "Pct_Unemployed",
+         "Pct_No_Plumbing",
+         "Pct_Receiving_PA",
+         "Pct_Not_In_Labor_Force",
+         "Pct_Disabled",
+         "Pct_No_Computer",
+         "Pct_No_Internet",
+         "Pct_Cost_Burdened_Housing",
+         "Pct_Kids_Not_In_School",
+         "Pct_Internet_No_Subscription",
+         "Pct_Overcrowded_Housing",
+         "Pct_Youth_Not_In_School_Not_Working",
+         "Pct_No_Kitchen"
+         ))
+
+# Set the factor levels based on the order
+loadings_df$Variable <- factor(loadings_df$Variable, levels = Ord)
+
+# Rename factor columns
+colnames(loadings_df)[1:ncol(loadings_df)-1] <- c("Educational and Health",
+                                                  "Employment & Shelter",
+                                                  "Labor & Housing Cost",
+                                                  "Digital Divide",
+                                                  "School Attendance")
+
+# Melt dataframe
+loadings_long <- melt(loadings_df, id.vars = "Variable", variable.name = "Factor", value.name = "Loading")
+
+# Rename variables for better readability
+loadings_long$Variable <- factor(loadings_long$Variable, levels = Ord,
+                                 labels = rev(c('Adults 25 above that did not finish schooling',
+                                            'Adults without health insurance',
+                                            'Unemployed',
+                                            'No Plumbing',
+                                            'Receiving public assistance',
+                                            'Not in Labor Force',
+                                            'Disabled',
+                                            'No Computer',
+                                            'No Internet Access',
+                                            'House-Cost burdened',
+                                            'Kids not enrolled in school',
+                                            'No internet subscription',
+                                            'House Overcrowded',
+                                            'Youth neither attending school nor work',
+                                            'No kitchen facility')))
+
+ggplot(loadings_long, aes(Variable, abs(Loading), fill=Loading)) + 
+  facet_wrap(~ Factor, nrow=1) + 
+  geom_bar(stat="identity", color="grey") + 
+  coord_flip() + 
+  scale_fill_continuous_diverging(palette = "Cyan-Mage", l1 = 30, l2 = 100, p1 = .9, p2 = 1.2) +
+  labs(x= "Dimension of Deprivation", y = "Loading Strength", fill = "Loading Strength") +
+  theme_bw(base_size=10) +
+  theme(
+    strip.text = element_text(size = 12),
+    strip.background = element_rect(fill = "grey93", colour = "black", size = 0.5),
+    axis.title.y = element_blank(),
+    axis.text.y = element_text(size = 12),
+    axis.text.y.left = element_text(size = 12),
+    axis.title.x = element_text(size = 12),
+    axis.text.x.bottom = element_text(size = 11),
+    legend.text = element_text(size = 12),  # Adjust legend text
+    legend.title = element_text(size = 14),  # Adjust legend title
+    legend.background = element_rect(fill = "grey93", colour = "black", size = 0.5),
+    panel.spacing = unit(0.33, "lines"), #spacing between facets
+    plot.margin = margin(12, 12, 12, 12) # reminder: plot margins (top, right, bottom, left)
+  )
+```
+
+Figure 1 presents a factor analysis of various deprivation indicators within Chicago, offering a statistical representation of the underlying structures of multidimensional poverty. Factor analysis, a complex statistical method, is employed here to identify latent variables that influence the observed data. These latent variables (or factors), represent broad domains of deprivation that are inferred from the correlations among the individual indicators. By analyzing these relationships, the figure visually conveys which aspects of urban life are most strongly associated with the different facets of poverty.
+
+Each bar in the graph corresponds to a specific indicator of deprivation, such as lack of health insurance or inadequate housing, and extends horizontally to signify its factor loading strength. Factor loadings are the key metrics in this analysis, reflecting the degree to which each indicator correlates with a particular factor — a higher loading indicates a stronger association. The graph is divided into distinct sections, each representing a broad dimension of deprivation, such as "Educational and Health," "Employment & Home Condition," "Labor & Housing Cost," "Digital Divide," and "School Attendance." These broad dimensions, labeled as MRs (Multiple Regression scores), serve to categorize the indicators, revealing clusters of challenges that tend to co-occur in the urban landscape.
+
+**Here lies a placeholder for the interactive shiny dashboard**
+
+**Figure 2: Spatial Distribution of Poverty & Latent Factors**
+
+The interactive dashboard presented herein is a crucial analytical instrument. It enables a nuanced exploration of poverty's spatial distribution against the associated latent deprivation dimensions that emerged from factor analysis. You might use the dashboard to engage in a comparative spatial analysis.
+
+**An analysis of the Digital Divide**
+
+In an increasingly digital world, the divide between those with access to technology and those without is becoming a critical area of concern for urban development and social equity. This analysis seeks to explore the relationship between poverty rates and digital accessibility within Cook County, focusing specifically on households without computers and those lacking internet access.
+
+```{r viz3_etl, echo=FALSE, include=TRUE}
+# Pull ACS data for census tracts in Cook County (Chicago)
+# Suppress all warnings
+options(warn = -1)
+options(message = -1)
+options(tigris_use_cache = TRUE)
+
+variables <- c(Total_Pop = "B01003_001",
+               Poverty = "B17001_002")
+
+chicago_tracts_poverty <- get_acs(geography = "tract",
+                                  variables = variables,
+                                  state = "IL",
+                                  county = "Cook",
+                                  geometry = TRUE,
+                                  output = "wide",
+                                  year = 2022,
+                                  survey = "acs5")
+
+# Calculate the poverty rate as a percentage
+chicago_tracts_poverty <- chicago_tracts_poverty %>%
+  mutate(poverty_rate = (PovertyE / Total_PopE) * 100)
+
+# Joining datasets on GEOID
+combined_data <- deprivation_percentages %>%
+  inner_join(chicago_tracts_poverty, by = "GEOID")
+
+# Reshape combined_data to long format
+long_data <- combined_data %>%
+  select(GEOID, poverty_rate, Pct_No_Computer, Pct_No_Internet) %>%
+  pivot_longer(cols = c(Pct_No_Computer, Pct_No_Internet),
+               names_to = "Indicator",
+               values_to = "Percentage")
+
+# Create combined scatterplot
+ggplot(long_data, aes(x = Percentage, y = poverty_rate)) +
+  geom_point(alpha = 0.5, color = "#0072B2") +
+  geom_smooth(method = "lm", color = "#D55E00", se = TRUE) +  #linear trendline with SEs
+  facet_wrap(~Indicator, scales = "free_x", ncol = 2) +
+  labs(title = "Poverty Rate vs Digital Divide Indicators",
+       x = "Percentage",
+       y = "Poverty Rate") +
+  theme_minimal() +
+  theme(strip.background = element_blank(),
+        strip.text.x = element_text(size = 12, face = "bold"))
+```
+
+The visualizations underscore a compelling narrative: areas with higher poverty rates tend to have a greater percentage of households without computers and internet access, pointing to a digital divide that mirrors socioeconomic disparities. This correlation not only highlights the barriers faced by economically disadvantaged communities in accessing digital resources but also emphasizes the critical role that digital accessibility plays in enabling opportunities for education, employment, and civic participation.
+
+Interestingly, from Figure 1 above, it is observed that unlike other broad factors such as ‘Employment and Home Condition’ or ‘Education and Health,’ which exhibit a higher degree of spatial clustering, the distribution of households without a computer or internet is more sporadic. This indicates a more general trend that transcends geographical and community-specific characteristics, suggesting that solutions to improve digital accessibility may need to be both broad-reaching and adaptable to local contexts. Addressing this challenge requires a multifaceted approach, focusing on infrastructure enhancement, affordability, and digital literacy programs, to ensure equitable access to technology across all communities.

@@ -1,3 +1,21 @@
+---
+title: "Methodology"
+---
+
+This project is seeks to investigate poverty in Chicago, and the various deprivations that households face. Data visualizations were produced using data published in the American Community Survey 5-Year Estimates as at 2022, compiled by the US Census Bureau.
+
+## Instructions to Execute Code
+
+To reproduce this analysis, an API key from the US Census Bureau is required. Follow these steps to obtain and use the key:
+
+1.) Request an API key by visiting this [page](https://api.census.gov/data/key_signup.html) to request a key
+
+2.) Activate the key using the link sent to your email.
+
+3.) Store the key as an environment variable in your project for secure access.
+
+Note: Detailed instructions and the code for the analysis are provided in the accompanying R Markdown document.
+
 # Multidimensional Poverty
 
 ```{r dependencies, echo = TRUE, include = FALSE}
@@ -54,7 +72,7 @@ To generate this matrix, the first step is to identify dimensions of deprivation
 
 17. Employment - percent not in labor force
 
-```{r viz3_etl, echo = TRUE, include = FALSE}
+```{r viz3_etl2, echo = TRUE, include = FALSE}
 
 # Define ACS variables for each indicator of deprivation
 variables_deprivation <- c(
@@ -254,90 +272,6 @@ print(loadings)
 
 
 ```
-```{r viz2_etl, echo = TRUE, include = FALSE}
-## Set your desired variables
-variables <- c(Total_Pop = "B01003_001",
-               Poverty = "B17001_002")
-
-# Pull ACS data for census tracts in Cook County (Chicago)
-chicago_tracts_poverty <- get_acs(geography = "tract",
-                                  variables = variables,
-                                  state = "IL",
-                                  county = "Cook",
-                                  geometry = TRUE,
-                                  output = "wide",
-                                  year = 2022,
-                                  survey = "acs5")
-
-# Calculate the poverty rate as a percentage
-chicago_tracts_poverty <- chicago_tracts_poverty %>%
-  mutate(poverty_rate = (PovertyE / Total_PopE) * 100)
-```
-
-```{r factor_scpres}
-# Calculate factor scores for each unit of analysis
-factor_scores <- factor.scores(deprivation_percentages[-1], fa_result)$scores  # Excluding 'GEOID' for calculation
-
-# Convert the factor scores into a data frame
-factor_scores_df <- as.data.frame(factor_scores)
-
-# Add the 'GEOID' back to the factor scores data frame
-factor_scores_df$GEOID <- deprivation_percentages$GEOID
-
-# View the head of the factor scores data frame
-head(factor_scores_df)
-```
-
-```{r interactive_map}
-library(shiny)
-library(leaflet)
-
-merged_data <- left_join(chicago_tracts_poverty, factor_scores_df, by = "GEOID")
-# Define UI
-ui <- fluidPage(
-  titlePanel("Interactive Map of MR Factors"),
-  sidebarLayout(
-    sidebarPanel(
-      selectInput("selected_MR", "Select MR Factor:", 
-                  choices = c("MR2", "MR4", "MR1", "MR5", "MR3"))
-    ),
-    mainPanel(
-      leafletOutput("interactiveMap")
-    )
-  )
-)
-
-# Define server logic
-server <- function(input, output) {
-  output$interactiveMap <- renderLeaflet({
-    # Dynamically select the column based on input$selected_MR
-    selected_col <- reactive({
-      merged_data[[input$selected_MR]]
-    })
-
-    # Create a reactive expression for the color palette based on selected MR values
-    color_pal <- reactive({
-      colorQuantile(palette = "YlOrRd", domain = selected_col(), n = 5)
-    })
-
-    leaflet(data = merged_data) %>%
-      addProviderTiles(providers$CartoDB.Positron) %>%
-      addPolygons(
-        fillColor = ~color_pal()(selected_col()),  # Apply the dynamic color palette
-        weight = 1,
-        color = "#BDBDC3",
-        fillOpacity = 0.8,
-        popup = ~paste(GEOID, "<br>", input$selected_MR, " Score: ", round(selected_col(), 2))
-      ) %>%
-      setView(lng = mean(c(-87.9, -87.5)), lat = mean(c(41.6, 42.0)), zoom = 11)
-  })
-}
-
-# Run the app
-shinyApp(ui, server)
-
-
-```
 
 
 ```{r viz1, fig.width=14, fig.height=7}
@@ -377,37 +311,34 @@ Ord <- rev(c("Pct_Adults_No_HighSchool",
 # Set the factor levels based on the order
 loadings_df$Variable <- factor(loadings_df$Variable, levels = Ord)
 
-# Rename the variables
-loadings_df <- loadings_df %>%
-  rename(
-    'Adults 25 above that did not finish schooling' = Pct_Adults_No_HighSchool,
-    'Adults without health insurance' = Pct_No_Insurance,
-    'Unemployed' = Pct_Unemployed,
-    'No Plumbing' = Pct_No_Plumbing,
-    'Receiving public assistance' = Pct_Receiving_PA,
-    'Not in Labor Force' = Pct_Not_In_Labor_Force,
-    'Disabled' = Pct_Disabled,
-    'No Computer' = Pct_No_Computer,
-    'No Internet Access' = Pct_No_Internet,
-    'House-Cost burdened' = Pct_Cost_Burdened_Housing,
-    'Kids not enrolled in school' = Pct_Kids_Not_In_School,
-    'No internet subscription' = Pct_Internet_No_Subscription,
-    'House Overcrowded' = Pct_Overcrowded_Housing,
-    'Youth neither attending school nor work' = Pct_Youth_Not_In_School_Not_Working,
-    'No kitchen facility' = Pct_No_Kitchen
-  )
-
-
 # Optionally rename the factor columns
 # This depends on how many factors you have
 colnames(loadings_df)[1:ncol(loadings_df)-1] <- c("Educational and Health",
-                                                  "Employment & Housing Condition",
+                                                  "Employment & Home Condition",
                                                   "Labor & Housing Cost",
                                                   "Digital Divide",
                                                   "School Attendance")
 
 # Melt the dataframe
 loadings_long <- melt(loadings_df, id.vars = "Variable", variable.name = "Factor", value.name = "Loading")
+
+# Now, rename the levels of the Variable factor
+loadings_long$Variable <- factor(loadings_long$Variable, levels = Ord,
+                                 labels = rev(c('Adults 25 above that did not finish schooling',
+                                            'Adults without health insurance',
+                                            'Unemployed',
+                                            'No Plumbing',
+                                            'Receiving public assistance',
+                                            'Not in Labor Force',
+                                            'Disabled',
+                                            'No Computer',
+                                            'No Internet Access',
+                                            'House-Cost burdened',
+                                            'Kids not enrolled in school',
+                                            'No internet subscription',
+                                            'House Overcrowded',
+                                            'Youth neither attending school nor work',
+                                            'No kitchen facility')))
 
 # Plot
 library("colorspace")

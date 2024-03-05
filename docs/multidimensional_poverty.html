@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Charting Inequality: A Deep Dive into Chicago’s Poverty Landscape - 3&nbsp; Multidimensional Poverty</title>
+<title>Charting Inequality: A Deep Dive into Chicago’s Poverty Landscape - 2&nbsp; Methodology</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -65,7 +65,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
 <link href="./summary.html" rel="next">
-<link href="./descriptive_stats.html" rel="prev">
+<link href="./index.html" rel="prev">
 <script src="site_libs/quarto-html/quarto.js"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
@@ -108,7 +108,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./multidimensional_poverty.html"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Multidimensional Poverty</span></a></li></ol></nav>
+      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./multidimensional_poverty.html"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Methodology</span></a></li></ol></nav>
       <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
       </a>
       <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
@@ -136,31 +136,19 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./index.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Preface</span></a>
-  </div>
-</li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./intro.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Introduction</span></span></a>
-  </div>
-</li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./descriptive_stats.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Descriptive Statistics</span></span></a>
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Exploring Multidimensional Poverty in the Chicago Area</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./multidimensional_poverty.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Multidimensional Poverty</span></span></a>
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Methodology</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./summary.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Summary</span></span></a>
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Archive</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
@@ -179,7 +167,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#deprivation-cutoffs" id="toc-deprivation-cutoffs" class="nav-link active" data-scroll-target="#deprivation-cutoffs"><span class="header-section-number">4</span> Deprivation Cutoffs</a></li>
+  <li><a href="#instructions-to-execute-code" id="toc-instructions-to-execute-code" class="nav-link active" data-scroll-target="#instructions-to-execute-code"><span class="header-section-number">2.1</span> Instructions to Execute Code</a></li>
+  <li><a href="#multidimensional-poverty" id="toc-multidimensional-poverty" class="nav-link" data-scroll-target="#multidimensional-poverty"><span class="header-section-number">3</span> Multidimensional Poverty</a></li>
+  <li><a href="#deprivation-cutoffs" id="toc-deprivation-cutoffs" class="nav-link" data-scroll-target="#deprivation-cutoffs"><span class="header-section-number">4</span> Deprivation Cutoffs</a></li>
   <li><a href="#exploratory-factor-analysis" id="toc-exploratory-factor-analysis" class="nav-link" data-scroll-target="#exploratory-factor-analysis"><span class="header-section-number">5</span> Exploratory Factor Analysis</a></li>
   </ul>
 </nav>
@@ -189,7 +179,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Multidimensional Poverty</span></h1>
+<h1 class="title"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Methodology</span></h1>
 </div>
 
 
@@ -204,6 +194,17 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 </header>
 
+<p>This project is seeks to investigate poverty in Chicago, and the various deprivations that households face. Data visualizations were produced using data published in the American Community Survey 5-Year Estimates as at 2022, compiled by the US Census Bureau.</p>
+<section id="instructions-to-execute-code" class="level2" data-number="2.1">
+<h2 data-number="2.1" class="anchored" data-anchor-id="instructions-to-execute-code"><span class="header-section-number">2.1</span> Instructions to Execute Code</h2>
+<p>To reproduce this analysis, an API key from the US Census Bureau is required. Follow these steps to obtain and use the key:</p>
+<p>1.) Request an API key by visiting this <a href="https://api.census.gov/data/key_signup.html">page</a> to request a key</p>
+<p>2.) Activate the key using the link sent to your email.</p>
+<p>3.) Store the key as an environment variable in your project for secure access.</p>
+<p>Note: Detailed instructions and the code for the analysis are provided in the accompanying R Markdown document.</p>
+</section>
+<section id="multidimensional-poverty" class="level1" data-number="3">
+<h1 data-number="3"><span class="header-section-number">3</span> Multidimensional Poverty</h1>
 <p>The starting point of constructing a Multidimensional Poverty Indicator would be the generation of a matrix representing tract areas versus indicators of deprivation.</p>
 <p>To generate this matrix, the first step is to identify dimensions of deprivation that can be constructed using the ACS. These are:</p>
 <ol type="1">
@@ -270,6 +271,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb1-42"><a href="#cb1-42" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
 <span id="cb1-43"><a href="#cb1-43" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(GEOID, <span class="fu">starts_with</span>(<span class="st">"Pct_"</span>))  <span class="co"># Keep only GEOID and calculated percentages</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
+</section>
 <section id="deprivation-cutoffs" class="level1" data-number="4">
 <h1 data-number="4"><span class="header-section-number">4</span> Deprivation Cutoffs</h1>
 <p>Intermediete Step here</p>
@@ -463,25 +465,110 @@ Cumulative Var 0.110 0.219 0.313 0.408 0.463</code></pre>
 </div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculate factor scores for each unit of analysis</span></span>
-<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>factor_scores <span class="ot">&lt;-</span> <span class="fu">factor.scores</span>(deprivation_percentages[<span class="sc">-</span><span class="dv">1</span>], fa_result)<span class="sc">$</span>scores  <span class="co"># Excluding 'GEOID' for calculation</span></span>
-<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Convert the factor scores into a data frame</span></span>
-<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>factor_scores_df <span class="ot">&lt;-</span> <span class="fu">as.data.frame</span>(factor_scores)</span>
-<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Add the 'GEOID' back to the factor scores data frame</span></span>
-<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a>factor_scores_df<span class="sc">$</span>GEOID <span class="ot">&lt;-</span> deprivation_percentages<span class="sc">$</span>GEOID</span>
-<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a><span class="co"># View the head of the factor scores data frame</span></span>
-<span id="cb17-11"><a href="#cb17-11" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(factor_scores_df)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>         MR2         MR4        MR1         MR5        MR3       GEOID
-1  0.1218242  0.73414510 -0.7521446 -0.07270834  1.6510993 17031010100
-2  0.8293460 -0.74058076 -0.1762981  0.64774589 -1.4483041 17031010201
-3  0.6194043  0.03677482  0.5746899 -1.01599898  0.4630609 17031010202
-4  0.3556673 -0.10069391  0.4394115 -1.22090602  1.4988615 17031010300
-5 -1.2584417 -1.22838571  0.9470750  1.88082056 -2.4596329 17031010400
-6 -1.1159884  0.81837396 -0.4993244 -0.01319102  0.9467878 17031010501</code></pre>
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(reshape2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: package 'reshape2' was built under R version 4.2.3</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>
+Attaching package: 'reshape2'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following object is masked from 'package:tidyr':
+
+    smiths</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Extract loadings matrix</span></span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>loadings_matrix <span class="ot">&lt;-</span> fa_result<span class="sc">$</span>loadings</span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Assuming the last 3 rows are SS loadings, prop. var., and cum. var., remove them</span></span>
+<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a>loadings_matrix_clean <span class="ot">&lt;-</span> loadings_matrix[<span class="dv">1</span><span class="sc">:</span>(<span class="fu">nrow</span>(loadings_matrix)), ]</span>
+<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-9"><a href="#cb21-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Convert clean loadings matrix to a dataframe</span></span>
+<span id="cb21-10"><a href="#cb21-10" aria-hidden="true" tabindex="-1"></a>loadings_df <span class="ot">&lt;-</span> <span class="fu">as.data.frame</span>(loadings_matrix_clean)</span>
+<span id="cb21-11"><a href="#cb21-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-12"><a href="#cb21-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Add row names as a new column for variable names</span></span>
+<span id="cb21-13"><a href="#cb21-13" aria-hidden="true" tabindex="-1"></a>loadings_df<span class="sc">$</span>Variable <span class="ot">&lt;-</span> <span class="fu">rownames</span>(loadings_df)</span>
+<span id="cb21-14"><a href="#cb21-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-15"><a href="#cb21-15" aria-hidden="true" tabindex="-1"></a><span class="co"># Define the order</span></span>
+<span id="cb21-16"><a href="#cb21-16" aria-hidden="true" tabindex="-1"></a>Ord <span class="ot">&lt;-</span> <span class="fu">rev</span>(<span class="fu">c</span>(<span class="st">"Pct_Adults_No_HighSchool"</span>,</span>
+<span id="cb21-17"><a href="#cb21-17" aria-hidden="true" tabindex="-1"></a>         <span class="st">"Pct_No_Insurance"</span>,</span>
+<span id="cb21-18"><a href="#cb21-18" aria-hidden="true" tabindex="-1"></a>         <span class="st">"Pct_Unemployed"</span>,</span>
+<span id="cb21-19"><a href="#cb21-19" aria-hidden="true" tabindex="-1"></a>         <span class="st">"Pct_No_Plumbing"</span>,</span>
+<span id="cb21-20"><a href="#cb21-20" aria-hidden="true" tabindex="-1"></a>         <span class="st">"Pct_Receiving_PA"</span>,</span>
+<span id="cb21-21"><a href="#cb21-21" aria-hidden="true" tabindex="-1"></a>         <span class="st">"Pct_Not_In_Labor_Force"</span>,</span>
+<span id="cb21-22"><a href="#cb21-22" aria-hidden="true" tabindex="-1"></a>         <span class="st">"Pct_Disabled"</span>,</span>
+<span id="cb21-23"><a href="#cb21-23" aria-hidden="true" tabindex="-1"></a>         <span class="st">"Pct_No_Computer"</span>,</span>
+<span id="cb21-24"><a href="#cb21-24" aria-hidden="true" tabindex="-1"></a>         <span class="st">"Pct_No_Internet"</span>,</span>
+<span id="cb21-25"><a href="#cb21-25" aria-hidden="true" tabindex="-1"></a>         <span class="st">"Pct_Cost_Burdened_Housing"</span>,</span>
+<span id="cb21-26"><a href="#cb21-26" aria-hidden="true" tabindex="-1"></a>         <span class="st">"Pct_Kids_Not_In_School"</span>,</span>
+<span id="cb21-27"><a href="#cb21-27" aria-hidden="true" tabindex="-1"></a>         <span class="st">"Pct_Internet_No_Subscription"</span>,</span>
+<span id="cb21-28"><a href="#cb21-28" aria-hidden="true" tabindex="-1"></a>         <span class="st">"Pct_Overcrowded_Housing"</span>,</span>
+<span id="cb21-29"><a href="#cb21-29" aria-hidden="true" tabindex="-1"></a>         <span class="st">"Pct_Youth_Not_In_School_Not_Working"</span>,</span>
+<span id="cb21-30"><a href="#cb21-30" aria-hidden="true" tabindex="-1"></a>         <span class="st">"Pct_No_Kitchen"</span></span>
+<span id="cb21-31"><a href="#cb21-31" aria-hidden="true" tabindex="-1"></a>         ))</span>
+<span id="cb21-32"><a href="#cb21-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-33"><a href="#cb21-33" aria-hidden="true" tabindex="-1"></a><span class="co"># Set the factor levels based on the order</span></span>
+<span id="cb21-34"><a href="#cb21-34" aria-hidden="true" tabindex="-1"></a>loadings_df<span class="sc">$</span>Variable <span class="ot">&lt;-</span> <span class="fu">factor</span>(loadings_df<span class="sc">$</span>Variable, <span class="at">levels =</span> Ord)</span>
+<span id="cb21-35"><a href="#cb21-35" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-36"><a href="#cb21-36" aria-hidden="true" tabindex="-1"></a><span class="co"># Optionally rename the factor columns</span></span>
+<span id="cb21-37"><a href="#cb21-37" aria-hidden="true" tabindex="-1"></a><span class="co"># This depends on how many factors you have</span></span>
+<span id="cb21-38"><a href="#cb21-38" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(loadings_df)[<span class="dv">1</span><span class="sc">:</span><span class="fu">ncol</span>(loadings_df)<span class="sc">-</span><span class="dv">1</span>] <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"Educational and Health"</span>,</span>
+<span id="cb21-39"><a href="#cb21-39" aria-hidden="true" tabindex="-1"></a>                                                  <span class="st">"Employment &amp; Home Condition"</span>,</span>
+<span id="cb21-40"><a href="#cb21-40" aria-hidden="true" tabindex="-1"></a>                                                  <span class="st">"Labor &amp; Housing Cost"</span>,</span>
+<span id="cb21-41"><a href="#cb21-41" aria-hidden="true" tabindex="-1"></a>                                                  <span class="st">"Digital Divide"</span>,</span>
+<span id="cb21-42"><a href="#cb21-42" aria-hidden="true" tabindex="-1"></a>                                                  <span class="st">"School Attendance"</span>)</span>
+<span id="cb21-43"><a href="#cb21-43" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-44"><a href="#cb21-44" aria-hidden="true" tabindex="-1"></a><span class="co"># Melt the dataframe</span></span>
+<span id="cb21-45"><a href="#cb21-45" aria-hidden="true" tabindex="-1"></a>loadings_long <span class="ot">&lt;-</span> <span class="fu">melt</span>(loadings_df, <span class="at">id.vars =</span> <span class="st">"Variable"</span>, <span class="at">variable.name =</span> <span class="st">"Factor"</span>, <span class="at">value.name =</span> <span class="st">"Loading"</span>)</span>
+<span id="cb21-46"><a href="#cb21-46" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-47"><a href="#cb21-47" aria-hidden="true" tabindex="-1"></a><span class="co"># Now, rename the levels of the Variable factor</span></span>
+<span id="cb21-48"><a href="#cb21-48" aria-hidden="true" tabindex="-1"></a>loadings_long<span class="sc">$</span>Variable <span class="ot">&lt;-</span> <span class="fu">factor</span>(loadings_long<span class="sc">$</span>Variable, <span class="at">levels =</span> Ord,</span>
+<span id="cb21-49"><a href="#cb21-49" aria-hidden="true" tabindex="-1"></a>                                 <span class="at">labels =</span> <span class="fu">rev</span>(<span class="fu">c</span>(<span class="st">'Adults 25 above that did not finish schooling'</span>,</span>
+<span id="cb21-50"><a href="#cb21-50" aria-hidden="true" tabindex="-1"></a>                                            <span class="st">'Adults without health insurance'</span>,</span>
+<span id="cb21-51"><a href="#cb21-51" aria-hidden="true" tabindex="-1"></a>                                            <span class="st">'Unemployed'</span>,</span>
+<span id="cb21-52"><a href="#cb21-52" aria-hidden="true" tabindex="-1"></a>                                            <span class="st">'No Plumbing'</span>,</span>
+<span id="cb21-53"><a href="#cb21-53" aria-hidden="true" tabindex="-1"></a>                                            <span class="st">'Receiving public assistance'</span>,</span>
+<span id="cb21-54"><a href="#cb21-54" aria-hidden="true" tabindex="-1"></a>                                            <span class="st">'Not in Labor Force'</span>,</span>
+<span id="cb21-55"><a href="#cb21-55" aria-hidden="true" tabindex="-1"></a>                                            <span class="st">'Disabled'</span>,</span>
+<span id="cb21-56"><a href="#cb21-56" aria-hidden="true" tabindex="-1"></a>                                            <span class="st">'No Computer'</span>,</span>
+<span id="cb21-57"><a href="#cb21-57" aria-hidden="true" tabindex="-1"></a>                                            <span class="st">'No Internet Access'</span>,</span>
+<span id="cb21-58"><a href="#cb21-58" aria-hidden="true" tabindex="-1"></a>                                            <span class="st">'House-Cost burdened'</span>,</span>
+<span id="cb21-59"><a href="#cb21-59" aria-hidden="true" tabindex="-1"></a>                                            <span class="st">'Kids not enrolled in school'</span>,</span>
+<span id="cb21-60"><a href="#cb21-60" aria-hidden="true" tabindex="-1"></a>                                            <span class="st">'No internet subscription'</span>,</span>
+<span id="cb21-61"><a href="#cb21-61" aria-hidden="true" tabindex="-1"></a>                                            <span class="st">'House Overcrowded'</span>,</span>
+<span id="cb21-62"><a href="#cb21-62" aria-hidden="true" tabindex="-1"></a>                                            <span class="st">'Youth neither attending school nor work'</span>,</span>
+<span id="cb21-63"><a href="#cb21-63" aria-hidden="true" tabindex="-1"></a>                                            <span class="st">'No kitchen facility'</span>)))</span>
+<span id="cb21-64"><a href="#cb21-64" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-65"><a href="#cb21-65" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot</span></span>
+<span id="cb21-66"><a href="#cb21-66" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(<span class="st">"colorspace"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: package 'colorspace' was built under R version 4.2.3</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(loadings_long, <span class="fu">aes</span>(Variable, <span class="fu">abs</span>(Loading), <span class="at">fill=</span>Loading)) <span class="sc">+</span> </span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span> Factor, <span class="at">nrow=</span><span class="dv">1</span>) <span class="sc">+</span> </span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="at">stat=</span><span class="st">"identity"</span>) <span class="sc">+</span> </span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_flip</span>() <span class="sc">+</span> </span>
+<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_continuous_diverging</span>(<span class="at">palette =</span> <span class="st">"Cyan-Mage"</span>, <span class="at">l1 =</span> <span class="dv">30</span>, <span class="at">l2 =</span> <span class="dv">100</span>, <span class="at">p1 =</span> .<span class="dv">9</span>, <span class="at">p2 =</span> <span class="fl">1.2</span>) <span class="sc">+</span></span>
+<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x=</span> <span class="st">"Dimension of Deprivation"</span>, <span class="at">y =</span> <span class="st">"Loading Strength"</span>, <span class="at">fill =</span> <span class="st">"Loading Strength"</span>) <span class="sc">+</span></span>
+<span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>(<span class="at">base_size=</span><span class="dv">10</span>) <span class="sc">+</span></span>
+<span id="cb23-8"><a href="#cb23-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(</span>
+<span id="cb23-9"><a href="#cb23-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">strip.background =</span> <span class="fu">element_rect</span>(<span class="at">fill =</span> <span class="st">"lightgray"</span>, <span class="at">size =</span> <span class="fl">1.25</span>),</span>
+<span id="cb23-10"><a href="#cb23-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">strip.text =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">9</span>),</span>
+<span id="cb23-11"><a href="#cb23-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">axis.title.y =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb23-12"><a href="#cb23-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">axis.text.y =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">10</span>),</span>
+<span id="cb23-13"><a href="#cb23-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">axis.title.x =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">10</span>),</span>
+<span id="cb23-14"><a href="#cb23-14" aria-hidden="true" tabindex="-1"></a>    <span class="at">panel.spacing =</span> <span class="fu">unit</span>(<span class="fl">0.33</span>, <span class="st">"lines"</span>), <span class="co"># adjust spacing between facets</span></span>
+<span id="cb23-15"><a href="#cb23-15" aria-hidden="true" tabindex="-1"></a>    <span class="at">plot.margin =</span> <span class="fu">margin</span>(<span class="dv">8</span>, <span class="dv">4</span>, <span class="dv">4</span>, <span class="dv">4</span>) <span class="co"># adjust overall plot margins (top, right, bottom, left)</span></span>
+<span id="cb23-16"><a href="#cb23-16" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: The `size` argument of `element_rect()` is deprecated as of ggplot2 3.4.0.
+ℹ Please use the `linewidth` argument instead.</code></pre>
+</div>
+<div class="cell-output-display">
+<p><img src="multidimensional_poverty_files/figure-html/viz1-1.png" class="img-fluid" width="1344"></p>
 </div>
 </div>
 
@@ -724,13 +811,13 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="./descriptive_stats.html" class="pagination-link">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Descriptive Statistics</span></span>
+      <a href="./index.html" class="pagination-link">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Exploring Multidimensional Poverty in the Chicago Area</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
       <a href="./summary.html" class="pagination-link">
-        <span class="nav-page-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Summary</span></span> <i class="bi bi-arrow-right-short"></i>
+        <span class="nav-page-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Archive</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>
