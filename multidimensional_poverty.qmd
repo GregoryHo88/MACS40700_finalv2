@@ -38,39 +38,33 @@ The starting point of constructing a Multidimensional Poverty Indicator would be
 
 To generate this matrix, the first step is to identify dimensions of deprivation that can be constructed using the ACS. These are:
 
-1.  Income - percentage below poverty level
+1.  Income - percentage receiving public assistance
 
-2.  Income - percentage receiving public assistance
+2.  Education - percentage of kids not enrolled in school
 
-3.  Education - percentage of kids not enrolled in school
+3.  Health - percentage of adults without health insurance
 
-4.  Education - percentage of Youth Not Attending School and Not Working
+4.  Health - percentage of children with disability status
 
-5.  Education - Percentage of adults 25 above that did not finish schooling
+5.  Health - percentage of adults with disability status
 
-6.  Health - percentage of adults without health insurance
+6.  Housing - percentage overcrowded: more than 2 occupants per room
 
-7.  Health - percentage of children with disability status
+7.  Housing - percentage cost-burdened
 
-8.  Health - percentage of adults with disability status
+8.  Living Conditions - percentage without plumbing facilities
 
-9.  Housing - percentage overcrowded: more than 2 occupants per room
+9.  Living Conditions - percentage without kitchen facilities
 
-10. Housing - percentage cost-burdened
+10. Digitalization - percentage without computer
 
-11. Living Conditions - percentage without plumbing facilities
+11. Digitalization - percentage without internet access
 
-12. Living Conditions - percentage without kitchen facilities
+12. Digitalization - percentage internet access without subscription
 
-13. Digitalization - percentage without computer
+13. Employment - percent unemployed
 
-14. Digitalization - percentage without internet access
-
-15. Digitalization - percentage internet access without subscription
-
-16. Employment - percent unemployed
-
-17. Employment - percent not in labor force
+14. Employment - percent not in labor force
 
 ```{r viz3_etl2, echo = TRUE, include = FALSE}
 
@@ -186,6 +180,12 @@ chicago_data_deprivation <- get_acs(geography = "tract",
                                     survey = "acs5")
 ```
 
+# Deprivation Cutoffs
+
+Typically, deprivation cutoffs are thresholds used to determine whether a household is considered deprived in a particular dimension. These cutoffs are crucial in generating a raw deprivation matrix, as they help to classify the population into different categories based on their level of deprivation.
+
+In our case, we deviate from the standard practice by setting the deprivation cutoffs at 0%. This means that we consider any level of deprivation within a household as significant enough to count towards the overall deprivation score for a census tract. By employing this approach, we are able to capture the full spectrum of deprivation levels, from the most mild to the most severe.
+
 ```{r viz3_processing}
 
 deprivation_percentages <- chicago_data_deprivation %>%
@@ -232,10 +232,6 @@ deprivation_percentages <- chicago_data_deprivation %>%
   ) %>%
   select(GEOID, starts_with("Pct_"))  # Keep only GEOID and calculated percentages
 ```
-
-# Deprivation Cutoffs
-
-Intermediete Step here
 
 # Exploratory Factor Analysis
 
@@ -344,18 +340,23 @@ library("colorspace")
 
 ggplot(loadings_long, aes(Variable, abs(Loading), fill=Loading)) + 
   facet_wrap(~ Factor, nrow=1) + 
-  geom_bar(stat="identity") + 
+  geom_bar(stat="identity", color="grey") + 
   coord_flip() + 
   scale_fill_continuous_diverging(palette = "Cyan-Mage", l1 = 30, l2 = 100, p1 = .9, p2 = 1.2) +
   labs(x= "Dimension of Deprivation", y = "Loading Strength", fill = "Loading Strength") +
   theme_bw(base_size=10) +
   theme(
-    strip.background = element_rect(fill = "lightgray", size = 1.25),
-    strip.text = element_text(size = 9),
+    strip.text = element_text(size = 12),
+    strip.background = element_rect(fill = "grey93", colour = "black", size = 0.5),
     axis.title.y = element_blank(),
-    axis.text.y = element_text(size = 10),
-    axis.title.x = element_text(size = 10),
-    panel.spacing = unit(0.33, "lines"), # adjust spacing between facets
-    plot.margin = margin(8, 4, 4, 4) # adjust overall plot margins (top, right, bottom, left)
+    axis.text.y = element_text(size = 12),
+    axis.text.y.left = element_text(size = 12),
+    axis.title.x = element_text(size = 12),
+    axis.text.x.bottom = element_text(size = 11),
+    legend.text = element_text(size = 12),  # Adjust legend text
+    legend.title = element_text(size = 14),  # Adjust legend title
+    legend.background = element_rect(fill = "grey93", colour = "black", size = 0.5),
+    panel.spacing = unit(0.33, "lines"), #spacing between facets
+    plot.margin = margin(12, 12, 12, 12) # reminder: plot margins (top, right, bottom, left)
   )
 ```

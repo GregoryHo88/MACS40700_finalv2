@@ -5,14 +5,11 @@ project:
 book:
   title: "Charting Inequality: A Deep Dive into Chicago's Poverty Landscape"
   author: "Gregory Ho"
-  date: "05/03/2024"
+  date: "03/05/2024"
   chapters:
     - index.qmd
     - multidimensional_poverty.qmd
-    - references.qmd
-
-bibliography: references.bib
-
+    
 format:
   html:
     theme: cosmo

@@ -159,7 +159,7 @@ The data is then processed to construct the deprivation matrix. In the MDPI lite
 deprivation_percentages <- chicago_data_deprivation %>%
   mutate(
     # Income
-    #Pct_Below_Poverty = (total_below_povertyE / poverty_totalE) * 100,
+    #Pct_Below_Poverty = (total_below_povertyE / poverty_totalE) * 100, # Blanked out as this should not be in the matrix
     Pct_Receiving_PA = (total_recieve_paE / recieve_pa_totalE) * 100,
     
     # Education
@@ -257,20 +257,20 @@ names(factor_scores_df) <- c(factor_names, "GEOID")
 merged_data <- left_join(chicago_tracts_poverty, factor_scores_df, by = "GEOID")
 ```
 
-```{r compute_neighbor_averages}
-# Check and convert GEOID to character if it's not already
-merged_data$GEOID <- as.character(merged_data$GEOID)
+## Neighbor averages for more spatial context
 
-# Assuming merged_data is properly set as an sf object
+```{r compute_neighbor_averages}
+# Convert GEOID to character
+merged_data$GEOID <- as.character(merged_data$GEOID)
 neighbor_list <- st_touches(merged_data, sparse = FALSE)
 
-# Now, each row in neighbor_list corresponds to a GeoID and contains TRUE/FALSE
-# for each other GeoID indicating whether it is a neighbor
+# Each row in neighbor_list corresponds to a GEOID and contains TRUE/FALSE
+# for each other GEOID, indicate whether it is a neighbor
 neighbor_indices <- lapply(1:nrow(merged_data), function(i) {
   which(neighbor_list[i, ])
 })
 
-# Calculate neighbor averages efficiently
+# Calculate neighboring averages
 factor_names <- c(
   "poverty_rate",
   "Education and Health", 
@@ -303,11 +303,21 @@ for (factor_name in factor_names) {
     }
   }
   
-  # Add the new column for neighbor average
+  # Add new column for neighboring averages
   new_col_name <- paste0(factor_name, "_neighbor_average")
   merged_data[[new_col_name]] <- neighbor_averages
 }
 ```
+
+## Add names of community areas for more spatial context
+
+```{r community_names}
+community_data <- read.csv("ct_chicago.csv", stringsAsFactors = FALSE)
+merged_data <- merge(merged_data, community_data, by.x = "GEOID", by.y = "ct_chicago", all.x = TRUE)
+merged_data <- merged_data %>%
+  mutate(community_name = if_else(is.na(community_name), 'Cook County - Outside Chicago', community_name))
+```
+
 
 ```{r save_data}
 data_dir <- here("interactive_mdpi")

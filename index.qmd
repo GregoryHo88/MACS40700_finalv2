@@ -2,11 +2,19 @@
 title: "Exploring Multidimensional Poverty in the Chicago Area"
 ---
 
+# Multidimensional Poverty in Cook County
+
 Within the vibrant urban tapestry of Chicago, characterized by its architectural prowess and economic vitality, lies a less visible but critically important dimension of urban life: multidimensional poverty. This phenomenon extends beyond the traditional income-based assessments, to encompass a range of deprivations that affect households.
 
 This commentary draws upon the latest empirical data from the ACS 5-Year Estimates for 2022, employing a methodical approach ([more details here](multidimensional_poverty.qmd)) to identify and quantify 15 distinct indicators of deprivation. These indicators span critical domains such as health, education, employment, housing, and digital accessibility, thereby offering a comprehensive view of the multifaceted nature of poverty.
 
-The rationale for adopting a multidimensional perspective on poverty is grounded in contemporary scholarly discourse, which advocates for a more nuanced understanding of poverty that reflects the complex realities of urban deprivation. This approach acknowledges that poverty is not merely a lack of financial resources but encompasses a broader spectrum of unmet needs and rights, including but not limited to, adequate healthcare, quality education, stable employment, secure housing, and equitable access to information technology.
+The rationale for adopting a multidimensional perspective on poverty is grounded in contemporary scholarly discourse, which advocates for a more nuanced understanding of poverty that reflects the complex realities of urban deprivation.
+
+**Consider this - What does poverty really mean in an urban context?**
+
+It's not just about empty pockets; it's also about being deprived in many other areas of life, such as quality education, stable jobs, safe homes, and equitable access in a digitalized world.
+
+## The Chicago Deprivation Canvas
 
 ```{r dependencies, echo = FALSE, include = FALSE}
 # Installing Required Packages
@@ -290,21 +298,25 @@ ggplot(loadings_long, aes(Variable, abs(Loading), fill=Loading)) +
 
 Figure 1 presents a factor analysis of various deprivation indicators within Chicago, offering a statistical representation of the underlying structures of multidimensional poverty. Factor analysis, a complex statistical method, is employed here to identify latent variables that influence the observed data. These latent variables (or factors), represent broad domains of deprivation that are inferred from the correlations among the individual indicators. By analyzing these relationships, the figure visually conveys which aspects of urban life are most strongly associated with the different facets of poverty.
 
-Each bar in the graph corresponds to a specific indicator of deprivation, such as lack of health insurance or inadequate housing, and extends horizontally to signify its factor loading strength. Factor loadings are the key metrics in this analysis, reflecting the degree to which each indicator correlates with a particular factor — a higher loading indicates a stronger association. The graph is divided into distinct sections, each representing a broad dimension of deprivation, such as "Educational and Health," "Employment & Home Condition," "Labor & Housing Cost," "Digital Divide," and "School Attendance." These broad dimensions, labeled as MRs (Multiple Regression scores), serve to categorize the indicators, revealing clusters of challenges that tend to co-occur in the urban landscape.
+Each bar on this graph tells a story: a slice of life defined by absence — be it in health insurance, a roof over one's head, or a computer in one's home. These bars stretch out to the extent of their 'factor loading strength,' a numerical representation of how strongly each indicator resonates with a factor (facet of poverty). Longer bars signifies a stronger association with a particular facet.
 
-**Figure 2: Spatial Distribution of Poverty & Latent Factors**
+We've dissected the graph into thematic territories, each named for a facet of deprivation like "Educational and Health," or "Digital Divide." These are not mere labels but analytical realms — Multiple Regression scores that cluster the indicators into meaningful assemblies. Here, the challenges of poverty don't stand in isolation; they cluster and often overlap, offering insight into which factors bundle together in the urban landscape of Chicago
 
-<iframe src="https://gregoryho.shinyapps.io/interactive_mdpi_spatialcontext/" width="100%" height="750">
+<iframe src="https://gregoryho.shinyapps.io/interactive_mdpi/" width="100%" height="750">
 
 </iframe>
 
-The interactive dashboard presented herein is a crucial analytical instrument. It enables a nuanced exploration of poverty's spatial distribution against the associated latent deprivation dimensions that emerged from factor analysis. You might use the dashboard to engage in a comparative spatial analysis.
+The interactive dashboard serves as a tool for dissecting this landscape of urban poverty. By mapping the contours of poverty's spatial distribution, this dashboard illuminates the not just "how much" but also the "where" of poverty. For example, the pronounced concentration of *Employment and Shelter* and *Education and Health* within specific localities underscores the urgent need for targeted policy interventions. In these identified areas, specific strategies such as housing initiatives that subsidize renovations, can directly address the localized nature of these deprivations. Tailoring policies to the unique characteristics of each neighborhood ensures that resources are efficiently allocated, directly benefiting those in most need.
+
+Conversely, the more diffused patterns associated with *Labor and Housing Cost*, *Digital Divide*, and *School Attendance* suggest systemic issues that pervade beyond individual neighborhoods. These widespread challenges call for overarching policy frameworks that address the broader infrastructural and societal deficits. Enhancing digital infrastructure, for instance, should not only focus on expanding access but also on ensuring affordability and fostering digital literacy across the board. Such inclusive strategies are pivotal in bridging the digital divide, thereby facilitating equitable access to essential services and opportunities.
 
 **An analysis of the Digital Divide**
 
 In an increasingly digital world, the divide between those with access to technology and those without is becoming a critical area of concern for urban development and social equity. This analysis seeks to explore the relationship between poverty rates and digital accessibility within Cook County, focusing specifically on households without computers and those lacking internet access.
 
-```{r viz3_etl, echo=FALSE, include=TRUE}
+**Figure 3: Poverty rates vs. Deprivations in Digital Equity**
+
+```{r viz3_etl, echo=FALSE, message=FALSE, include=TRUE}
 # Pull ACS data for census tracts in Cook County (Chicago)
 # Suppress all warnings
 options(warn = -1)
@@ -353,4 +365,8 @@ ggplot(long_data, aes(x = Percentage, y = poverty_rate)) +
 
 The visualizations underscore a compelling narrative: areas with higher poverty rates tend to have a greater percentage of households without computers and internet access, pointing to a digital divide that mirrors socioeconomic disparities. This correlation not only highlights the barriers faced by economically disadvantaged communities in accessing digital resources but also emphasizes the critical role that digital accessibility plays in enabling opportunities for education, employment, and civic participation.
 
-Interestingly, from Figure 1 above, it is observed that unlike other broad factors such as ‘Employment and Home Condition’ or ‘Education and Health,’ which exhibit a higher degree of spatial clustering, the distribution of households without a computer or internet is more sporadic. This indicates a more general trend that transcends geographical and community-specific characteristics, suggesting that solutions to improve digital accessibility may need to be both broad-reaching and adaptable to local contexts. Addressing this challenge requires a multifaceted approach, focusing on infrastructure enhancement, affordability, and digital literacy programs, to ensure equitable access to technology across all communities.
+Furthermore from *Figure 2*, given the spatial distribution of this 'digital divide'. This problem is characterized by systemic disparities that require holistic solutions. Policymakers might take these insights to re-calibrate resources towards digital literacy programs, affordable access initiatives, or infrastructure development.
+
+# Credits
+
+Developed as a final project for the course MACS 40700 at the University of Chicago. The author is thankful to Jean Clipperton and Zihua Chen for the guidance and feedback received throughout the quarter. Special thanks to Tiwaa Bruks for additional inputs on reading experience.
