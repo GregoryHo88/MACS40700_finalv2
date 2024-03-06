@@ -1,0 +1,12 @@
+name: interactive_mdpi
+title: interactive_mdpi
+username: gregoryho
+account: gregoryho
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 11361576
+bundleId: 8310929
+url: https://gregoryho.shinyapps.io/interactive_mdpi/
+version: 1
+asMultiple: FALSE
+asStatic: FALSE

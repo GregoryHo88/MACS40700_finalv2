@@ -1,0 +1,12 @@
+name: interactive_mdpi_spatialcontext
+title: interactive_mdpi_spatialcontext
+username: gregoryho
+account: gregoryho
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 11414003
+bundleId: 8337207
+url: https://gregoryho.shinyapps.io/interactive_mdpi_spatialcontext/
+version: 1
+asMultiple: FALSE
+asStatic: FALSE

@@ -273,7 +273,6 @@ print(loadings)
 
 ```
 
-
 ```{r viz1, fig.width=14, fig.height=7}
 library(reshape2)
 library(ggplot2)

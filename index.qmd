@@ -199,6 +199,11 @@ fa_result <- fa(deprivation_factors, nfactors = 5, rotate = "varimax", fm = "min
 **Figure 1: Multidimensional Poverty Indicators in Chicago: A Factor Analysis**
 
 ```{r viz1, echo=FALSE, include=TRUE, fig.width=14, fig.height=8}
+#supress warnings
+options(warn = -1)
+options(message = -1)
+options(tigris_use_cache = TRUE)
+
 # Extract loadings matrix
 loadings_matrix <- fa_result$loadings
 
@@ -287,9 +292,11 @@ Figure 1 presents a factor analysis of various deprivation indicators within Chi
 
 Each bar in the graph corresponds to a specific indicator of deprivation, such as lack of health insurance or inadequate housing, and extends horizontally to signify its factor loading strength. Factor loadings are the key metrics in this analysis, reflecting the degree to which each indicator correlates with a particular factor — a higher loading indicates a stronger association. The graph is divided into distinct sections, each representing a broad dimension of deprivation, such as "Educational and Health," "Employment & Home Condition," "Labor & Housing Cost," "Digital Divide," and "School Attendance." These broad dimensions, labeled as MRs (Multiple Regression scores), serve to categorize the indicators, revealing clusters of challenges that tend to co-occur in the urban landscape.
 
-**Here lies a placeholder for the interactive shiny dashboard**
-
 **Figure 2: Spatial Distribution of Poverty & Latent Factors**
+
+<iframe src="https://gregoryho.shinyapps.io/interactive_mdpi_spatialcontext/" width="100%" height="750">
+
+</iframe>
 
 The interactive dashboard presented herein is a crucial analytical instrument. It enables a nuanced exploration of poverty's spatial distribution against the associated latent deprivation dimensions that emerged from factor analysis. You might use the dashboard to engage in a comparative spatial analysis.
 
