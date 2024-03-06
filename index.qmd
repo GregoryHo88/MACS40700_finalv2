@@ -372,3 +372,9 @@ Furthermore from *Figure 2*, given the spatial distribution of this 'digital div
 # Credits
 
 Developed as a final project for the course MACS 40700 at the University of Chicago. The author is thankful to Jean Clipperton and Zihua Chen for the guidance and feedback received throughout the quarter. Special thanks to Tiwaa Bruks for additional inputs on reading experience.
+
+I benefited from [danmirman](https://rpubs.com/danmirman/plotting_factor_analysis) in producing *Figure 1*
+
+Methods for Multidimensional Poverty based on
+
+Alkire, Sabina, and James Foster. "Counting and multidimensional poverty measurement." Journal of public economics 95, no. 7-8 (2011): 476-487.
