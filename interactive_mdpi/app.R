@@ -26,8 +26,7 @@ ui <- fluidPage(
                               "Employment and Shelter" = "Employment and Shelter", 
                               "Labor and Housing Cost" = "Labor and Housing Cost", 
                               "The Digital Divide" = "The Digital Divide", 
-                              "School Attendance" = "School Attendance")),
-      checkboxInput("chicago_only", "Show only Chicago", value = FALSE) 
+                              "School Attendance" = "School Attendance"))
     ),
     mainPanel(
       leafletOutput("interactiveMap", height = "80vh"),
@@ -43,26 +42,17 @@ server <- function(input, output) {
   output$interactiveMap <- renderLeaflet({
     leaflet(data = data_path) %>%
       addProviderTiles(providers$CartoDB.Positron) %>%
-      setView(lng = -87.8, lat = 41.8, zoom = 9)
-  })
-  
-  observe({
-    filtered_data <- if(input$chicago_only) {
-      data_path %>% filter(community_name != "Cook County - Outside Chicago")
-    } else {
-      data_path
-    }
-    
-    leafletProxy("interactiveMap", data = filtered_data) %>%
-      clearShapes() %>%
-      addPolygons(fillColor = ~colorQuantile(palette = "YlOrRd", domain = filtered_data[[input$selected_factor]], n = 10)(filtered_data[[input$selected_factor]]),
-                  weight = 1,
-                  color = "#BDBDC3",
-                  fillOpacity = 0.7,
-                  popup = ~paste("Community: ", community_name,
-                                 "<br>GeoID: ", GEOID,
-                                 "<br>Score: ", round(filtered_data[[input$selected_factor]][which(filtered_data$GEOID == GEOID)], 2),
-                                 "<br>Average Neighbor Score: ", round(filtered_data[[paste0(input$selected_factor, "_neighbor_average")]][which(filtered_data$GEOID == GEOID)], 2)))
+      setView(lng = -87.8, lat = 41.8, zoom = 9) %>%
+      addPolygons(
+        fillColor = ~colorQuantile(palette = "YlOrRd", domain = data_path[[input$selected_factor]], n = 10)(data_path[[input$selected_factor]]),
+        weight = 1,
+        color = "#BDBDC3",
+        fillOpacity = 0.7,
+        popup = ~paste("Community: ", community_name,
+                       "<br>GeoID: ", GEOID,
+                       "<br>Score: ", round(data_path[[input$selected_factor]][which(data_path$GEOID == GEOID)], 2),
+                       "<br>Average Neighbor Score: ", round(data_path[[paste0(input$selected_factor, "_neighbor_average")]][which(data_path$GEOID == GEOID)], 2))
+      )
   })
 }
 
