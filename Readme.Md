@@ -17,10 +17,12 @@ Note: Detailed instructions and the code for the analysis are provided in the ac
 # Link to Main Visualization page
 The main visualization can be found by following this [link](https://gregoryho88.github.io/MACS40700_finalv2/)
 
-# Link to ETL script and Project Report
+# Link to ETL script, Project Report & Interactive App
 
 [ETL, MDPI & Factor Analysis](ETL_MDPI_FA.Rmd)
 
 [Project Report](Final_Report.pdf)
+
+[Interactive App](interactive_mdpi/app.R)
 
 
