@@ -8,15 +8,15 @@ This project is seeks to investigate poverty in Chicago, and the various depriva
 
 To reproduce this analysis, an API key from the US Census Bureau is required. Follow these steps to obtain and use the key:
 
-1.) Request an API key by visiting this [page](https://api.census.gov/data/key_signup.html) to request a key
+**1. Request an API key** by visiting this [page](https://api.census.gov/data/key_signup.html) to request a key.
 
-2.) Activate the key using the link sent to your email.
+**2. Activate the key** using the link sent to your email.
 
-3.) Store the key as an environment variable in your project for secure access.
+**3. Store the key** as an environment variable in your project for secure access.
 
-Note: Detailed instructions and the code for the analysis are provided in the accompanying R Markdown document.
+*Note: Detailed instructions and the code for the analysis are provided in the accompanying R Markdown document.*
 
-# Multidimensional Poverty
+## Dimensions of Deprivation
 
 ```{r dependencies, echo = TRUE, include = FALSE}
 # Installing Required Packages
@@ -36,35 +36,38 @@ library(patchwork)
 
 The starting point of constructing a Multidimensional Poverty Indicator would be the generation of a matrix representing tract areas versus indicators of deprivation.
 
-To generate this matrix, the first step is to identify dimensions of deprivation that can be constructed using the ACS. These are:
+To generate the matrix representing tract areas versus indicators of deprivation, the following dimensions were identified:
 
-1.  Income - percentage receiving public assistance
+### Income
+- **Percentage receiving public assistance**
 
-2.  Education - percentage of kids not enrolled in school
+### Education
+- **Percentage of kids not enrolled in school**
+- **Youth not attending school and not working**
+- **Percentage of adults 25 and above that did not finish schooling**
 
-3.  Health - percentage of adults without health insurance
+### Health
+- **Percentage of adults without health insurance**
+- **Percentage of children with disability status**
+- **Percentage of adults with disability status**
 
-4.  Health - percentage of children with disability status
+### Housing
+- **Percentage overcrowded: more than 2 occupants per room**
+- **Percentage cost-burdened**
 
-5.  Health - percentage of adults with disability status
+### Living Conditions
+- **Percentage without plumbing facilities**
+- **Percentage without kitchen facilities**
 
-6.  Housing - percentage overcrowded: more than 2 occupants per room
+### Digitalization
+- **Percentage without a computer**
+- **Percentage without internet access**
+- **Percentage with internet access but no subscription**
 
-7.  Housing - percentage cost-burdened
+### Employment
+- **Percentage unemployed**
+- **Percentage not in labor force**
 
-8.  Living Conditions - percentage without plumbing facilities
-
-9.  Living Conditions - percentage without kitchen facilities
-
-10. Digitalization - percentage without computer
-
-11. Digitalization - percentage without internet access
-
-12. Digitalization - percentage internet access without subscription
-
-13. Employment - percent unemployed
-
-14. Employment - percent not in labor force
 
 ```{r viz3_etl2, echo = TRUE, include = FALSE}
 
@@ -180,7 +183,7 @@ chicago_data_deprivation <- get_acs(geography = "tract",
                                     survey = "acs5")
 ```
 
-# Deprivation Cutoffs
+## Deprivation Cutoffs
 
 Typically, deprivation cutoffs are thresholds used to determine whether a household is considered deprived in a particular dimension. These cutoffs are crucial in generating a raw deprivation matrix, as they help to classify the population into different categories based on their level of deprivation.
 
@@ -233,7 +236,7 @@ deprivation_percentages <- chicago_data_deprivation %>%
   select(GEOID, starts_with("Pct_"))  # Keep only GEOID and calculated percentages
 ```
 
-# Exploratory Factor Analysis
+## Exploratory Factor Analysis
 
 ```{r factor}
 library(psych)
@@ -268,6 +271,8 @@ print(loadings)
 
 
 ```
+
+## Visualization
 
 ```{r viz1, fig.width=14, fig.height=7}
 library(reshape2)
