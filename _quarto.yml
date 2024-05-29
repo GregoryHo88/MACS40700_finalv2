@@ -18,7 +18,7 @@ format:
     theme: cosmo
     toc: true
     toc-depth: 3
-    toc-location: left  # or floating
+    toc-location: left
     navbar:
       left:
         - text: "Home"
