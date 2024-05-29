@@ -2,6 +2,24 @@
 title: "An analysis of the Digital Divide"
 ---
 
+```{r dependencies, echo = FALSE, include = FALSE}
+# Installing Required Packages
+# packages <- c("tidycensus", "waffle", "ggplot2", "dplyr", "patchwork", "psych", "reshape2", "colorspace")
+# sapply(packages, function(p) if(!require(p, character.only = TRUE)) install.packages(p))
+
+# Load the necessary libraries
+library(tidyverse)
+library(tidycensus)
+library(ggplot2)
+library(dplyr)
+library(waffle)
+library(patchwork)
+library(psych)
+library(reshape2)
+library(colorspace)
+
+```
+
 In an increasingly digital world, the divide between those with access to technology and those without is becoming a critical area of concern for urban development and social equity. This analysis seeks to explore the relationship between poverty rates and digital accessibility within Cook County, focusing specifically on households without computers and those lacking internet access.
 
 **Figure 3: Poverty rates vs. Deprivations in Digital Equity**
