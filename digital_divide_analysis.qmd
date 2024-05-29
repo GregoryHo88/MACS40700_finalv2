@@ -1,0 +1,60 @@
+---
+title: "An analysis of the Digital Divide"
+---
+
+In an increasingly digital world, the divide between those with access to technology and those without is becoming a critical area of concern for urban development and social equity. This analysis seeks to explore the relationship between poverty rates and digital accessibility within Cook County, focusing specifically on households without computers and those lacking internet access.
+
+**Figure 3: Poverty rates vs. Deprivations in Digital Equity**
+
+```{r viz3_etl, echo=FALSE, message=FALSE, include=TRUE}
+# Pull ACS data for census tracts in Cook County (Chicago)
+# Suppress all warnings
+options(warn = -1)
+options(message = -1)
+options(tigris_use_cache = TRUE)
+
+variables <- c(Total_Pop = "B01003_001",
+               Poverty = "B17001_002")
+
+chicago_tracts_poverty <- get_acs(geography = "tract",
+                                  variables = variables,
+                                  state = "IL",
+                                  county = "Cook",
+                                  geometry = TRUE,
+                                  output = "wide",
+                                  year = 2022,
+                                  survey = "acs5")
+
+# Calculate the poverty rate as a percentage
+chicago_tracts_poverty <- chicago_tracts_poverty %>%
+  mutate(poverty_rate = (PovertyE / Total_PopE) * 100)
+
+# Joining datasets on GEOID
+combined_data <- deprivation_percentages %>%
+  inner_join(chicago_tracts_poverty, by = "GEOID")
+
+# Reshape combined_data to long format
+long_data <- combined_data %>%
+  select(GEOID, poverty_rate, Pct_No_Computer, Pct_No_Internet) %>%
+  pivot_longer(cols = c(Pct_No_Computer, Pct_No_Internet),
+               names_to = "Indicator",
+               values_to = "Percentage")
+
+# Create combined scatterplot
+ggplot(long_data, aes(x = Percentage, y = poverty_rate)) +
+  geom_point(alpha = 0.5, color = "#0072B2") +
+  geom_smooth(method = "lm", color = "#D55E00", se = TRUE) +  #linear trendline with SEs
+  facet_wrap(~Indicator, scales = "free_x",
+             ncol = 2,
+             labeller = as_labeller(c(Pct_No_Computer = "No Computer", Pct_No_Internet = "No Internet"))) +
+  labs(title = "Poverty Rate vs Digital Divide Indicators",
+       x = "Percentage",
+       y = "Poverty Rate") +
+  theme_minimal() +
+  theme(strip.background = element_blank(),
+        strip.text.x = element_text(size = 12, face = "bold"))
+```
+
+The visualizations underscore a compelling narrative: areas with higher poverty rates tend to have a greater percentage of households without computers and internet access, pointing to a digital divide that mirrors socioeconomic disparities. This correlation not only highlights the barriers faced by economically disadvantaged communities in accessing digital resources but also emphasizes the critical role that digital accessibility plays in enabling opportunities for education, employment, and civic participation.
+
+Furthermore from *Figure 2*, given the spatial distribution of this 'digital divide'. This problem is characterized by systemic disparities that require holistic solutions. Policymakers might take these insights to re-calibrate resources towards digital literacy programs, affordable access initiatives, or infrastructure development.

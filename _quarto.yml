@@ -9,21 +9,26 @@ book:
   chapters:
     - index.qmd
     - multidimensional_poverty.qmd
-    
+    - spatial_distribution.qmd  # New section for Iframe and analysis
+    - digital_divide_analysis.qmd  # New section for digital divide analysis
+
 format:
   html:
     theme: cosmo
     toc: true
     toc-depth: 3
-    toc-location: left-body
+    toc-location: left  # or floating
     navbar:
       left:
         - text: "Home"
           href: index.qmd
         - text: "Methodology"
           href: multidimensional_poverty.qmd
+        - text: "Spatial Distribution"
+          href: spatial_distribution.qmd
+        - text: "Digital Divide Analysis"
+          href: digital_divide_analysis.qmd
   pdf:
     documentclass: scrreprt
 
 editor: visual
-
