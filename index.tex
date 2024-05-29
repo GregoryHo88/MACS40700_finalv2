@@ -825,7 +825,7 @@ Warning: package 'colorspace' was built under R version 4.2.3
 \begin{Highlighting}[]
 \FunctionTok{ggplot}\NormalTok{(loadings\_long, }\FunctionTok{aes}\NormalTok{(Variable, }\FunctionTok{abs}\NormalTok{(Loading), }\AttributeTok{fill=}\NormalTok{Loading)) }\SpecialCharTok{+} 
   \FunctionTok{facet\_wrap}\NormalTok{(}\SpecialCharTok{\textasciitilde{}}\NormalTok{ Factor, }\AttributeTok{nrow=}\DecValTok{1}\NormalTok{) }\SpecialCharTok{+} 
-  \FunctionTok{geom\_bar}\NormalTok{(}\AttributeTok{stat=}\StringTok{"identity"}\NormalTok{, }\AttributeTok{color=}\StringTok{"grey"}\NormalTok{) }\SpecialCharTok{+} 
+  \FunctionTok{geom\_bar}\NormalTok{(}\AttributeTok{stat=}\StringTok{"identity"}\NormalTok{, }\AttributeTok{color=}\StringTok{"black"}\NormalTok{, }\AttributeTok{size=}\FloatTok{0.3}\NormalTok{) }\SpecialCharTok{+}  \CommentTok{\# change outline to black, increase size}
   \FunctionTok{coord\_flip}\NormalTok{() }\SpecialCharTok{+} 
   \FunctionTok{scale\_fill\_continuous\_diverging}\NormalTok{(}\AttributeTok{palette =} \StringTok{"Cyan{-}Mage"}\NormalTok{, }\AttributeTok{l1 =} \DecValTok{30}\NormalTok{, }\AttributeTok{l2 =} \DecValTok{100}\NormalTok{, }\AttributeTok{p1 =}\NormalTok{ .}\DecValTok{9}\NormalTok{, }\AttributeTok{p2 =} \FloatTok{1.2}\NormalTok{) }\SpecialCharTok{+}
   \FunctionTok{labs}\NormalTok{(}\AttributeTok{x=} \StringTok{"Dimension of Deprivation"}\NormalTok{, }\AttributeTok{y =} \StringTok{"Loading Strength"}\NormalTok{, }\AttributeTok{fill =} \StringTok{"Loading Strength"}\NormalTok{) }\SpecialCharTok{+}
@@ -841,11 +841,16 @@ Warning: package 'colorspace' was built under R version 4.2.3
     \AttributeTok{legend.text =} \FunctionTok{element\_text}\NormalTok{(}\AttributeTok{size =} \DecValTok{12}\NormalTok{),  }\CommentTok{\# Adjust legend text}
     \AttributeTok{legend.title =} \FunctionTok{element\_text}\NormalTok{(}\AttributeTok{size =} \DecValTok{14}\NormalTok{),  }\CommentTok{\# Adjust legend title}
     \AttributeTok{legend.background =} \FunctionTok{element\_rect}\NormalTok{(}\AttributeTok{fill =} \StringTok{"grey93"}\NormalTok{, }\AttributeTok{colour =} \StringTok{"black"}\NormalTok{, }\AttributeTok{size =} \FloatTok{0.5}\NormalTok{),}
-    \AttributeTok{panel.spacing =} \FunctionTok{unit}\NormalTok{(}\FloatTok{0.33}\NormalTok{, }\StringTok{"lines"}\NormalTok{), }\CommentTok{\#spacing between facets}
-    \AttributeTok{plot.margin =} \FunctionTok{margin}\NormalTok{(}\DecValTok{12}\NormalTok{, }\DecValTok{12}\NormalTok{, }\DecValTok{12}\NormalTok{, }\DecValTok{12}\NormalTok{) }\CommentTok{\# reminder: plot margins (top, right, bottom, left)}
+    \AttributeTok{panel.spacing =} \FunctionTok{unit}\NormalTok{(}\FloatTok{0.33}\NormalTok{, }\StringTok{"lines"}\NormalTok{),  }\CommentTok{\# spacing between facets}
+    \AttributeTok{plot.margin =} \FunctionTok{margin}\NormalTok{(}\DecValTok{12}\NormalTok{, }\DecValTok{12}\NormalTok{, }\DecValTok{12}\NormalTok{, }\DecValTok{12}\NormalTok{)  }\CommentTok{\# reminder: plot margins (top, right, bottom, left)}
 \NormalTok{  )}
 \end{Highlighting}
 \end{Shaded}
+
+\begin{verbatim}
+Warning: Using `size` aesthetic for lines was deprecated in ggplot2 3.4.0.
+i Please use `linewidth` instead.
+\end{verbatim}
 
 \begin{verbatim}
 Warning: The `size` argument of `element_rect()` is deprecated as of ggplot2 3.4.0.
