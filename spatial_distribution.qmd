@@ -4,7 +4,7 @@ title: "Spatial Distribution of Poverty & Latent Factors"
 
 The interactive dashboard serves as a tool for dissecting this landscape of urban poverty. By mapping the contours of poverty's spatial distribution, this dashboard illuminates the not just "how much" but also the "where" of poverty.
 
-<iframe src="https://gregoryho.shinyapps.io/interactive_mdpi/" width="100%" height="980">
+<iframe src="https://gregoryho.shinyapps.io/interactive_mdpi/" width="100%" height="1100">
 
 </iframe>
 
