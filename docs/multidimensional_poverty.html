@@ -177,9 +177,19 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
    
   <ul>
   <li><a href="#instructions-to-execute-code" id="toc-instructions-to-execute-code" class="nav-link active" data-scroll-target="#instructions-to-execute-code"><span class="header-section-number">4.1</span> Instructions to Execute Code</a></li>
-  <li><a href="#multidimensional-poverty" id="toc-multidimensional-poverty" class="nav-link" data-scroll-target="#multidimensional-poverty"><span class="header-section-number">5</span> Multidimensional Poverty</a></li>
-  <li><a href="#deprivation-cutoffs" id="toc-deprivation-cutoffs" class="nav-link" data-scroll-target="#deprivation-cutoffs"><span class="header-section-number">6</span> Deprivation Cutoffs</a></li>
-  <li><a href="#exploratory-factor-analysis" id="toc-exploratory-factor-analysis" class="nav-link" data-scroll-target="#exploratory-factor-analysis"><span class="header-section-number">7</span> Exploratory Factor Analysis</a></li>
+  <li><a href="#dimensions-of-deprivation" id="toc-dimensions-of-deprivation" class="nav-link" data-scroll-target="#dimensions-of-deprivation"><span class="header-section-number">4.2</span> Dimensions of Deprivation</a>
+  <ul class="collapse">
+  <li><a href="#income" id="toc-income" class="nav-link" data-scroll-target="#income"><span class="header-section-number">4.2.1</span> Income</a></li>
+  <li><a href="#education" id="toc-education" class="nav-link" data-scroll-target="#education"><span class="header-section-number">4.2.2</span> Education</a></li>
+  <li><a href="#health" id="toc-health" class="nav-link" data-scroll-target="#health"><span class="header-section-number">4.2.3</span> Health</a></li>
+  <li><a href="#housing" id="toc-housing" class="nav-link" data-scroll-target="#housing"><span class="header-section-number">4.2.4</span> Housing</a></li>
+  <li><a href="#living-conditions" id="toc-living-conditions" class="nav-link" data-scroll-target="#living-conditions"><span class="header-section-number">4.2.5</span> Living Conditions</a></li>
+  <li><a href="#digitalization" id="toc-digitalization" class="nav-link" data-scroll-target="#digitalization"><span class="header-section-number">4.2.6</span> Digitalization</a></li>
+  <li><a href="#employment" id="toc-employment" class="nav-link" data-scroll-target="#employment"><span class="header-section-number">4.2.7</span> Employment</a></li>
+  </ul></li>
+  <li><a href="#deprivation-cutoffs" id="toc-deprivation-cutoffs" class="nav-link" data-scroll-target="#deprivation-cutoffs"><span class="header-section-number">4.3</span> Deprivation Cutoffs</a></li>
+  <li><a href="#exploratory-factor-analysis" id="toc-exploratory-factor-analysis" class="nav-link" data-scroll-target="#exploratory-factor-analysis"><span class="header-section-number">4.4</span> Exploratory Factor Analysis</a></li>
+  <li><a href="#visualization" id="toc-visualization" class="nav-link" data-scroll-target="#visualization"><span class="header-section-number">4.5</span> Visualization</a></li>
   </ul>
 </nav>
 </nav>
@@ -213,34 +223,69 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="instructions-to-execute-code" class="level2" data-number="4.1">
 <h2 data-number="4.1" class="anchored" data-anchor-id="instructions-to-execute-code"><span class="header-section-number">4.1</span> Instructions to Execute Code</h2>
 <p>To reproduce this analysis, an API key from the US Census Bureau is required. Follow these steps to obtain and use the key:</p>
-<p>1.) Request an API key by visiting this <a href="https://api.census.gov/data/key_signup.html">page</a> to request a key</p>
-<p>2.) Activate the key using the link sent to your email.</p>
-<p>3.) Store the key as an environment variable in your project for secure access.</p>
-<p>Note: Detailed instructions and the code for the analysis are provided in the accompanying R Markdown document.</p>
+<p><strong>1. Request an API key</strong> by visiting this <a href="https://api.census.gov/data/key_signup.html">page</a> to request a key.</p>
+<p><strong>2. Activate the key</strong> using the link sent to your email.</p>
+<p><strong>3. Store the key</strong> as an environment variable in your project for secure access.</p>
+<p><em>Note: Detailed instructions and the code for the analysis are provided in the accompanying R Markdown document.</em></p>
 </section>
-<section id="multidimensional-poverty" class="level1" data-number="5">
-<h1 data-number="5"><span class="header-section-number">5</span> Multidimensional Poverty</h1>
+<section id="dimensions-of-deprivation" class="level2" data-number="4.2">
+<h2 data-number="4.2" class="anchored" data-anchor-id="dimensions-of-deprivation"><span class="header-section-number">4.2</span> Dimensions of Deprivation</h2>
 <p>The starting point of constructing a Multidimensional Poverty Indicator would be the generation of a matrix representing tract areas versus indicators of deprivation.</p>
-<p>To generate this matrix, the first step is to identify dimensions of deprivation that can be constructed using the ACS. These are:</p>
-<ol type="1">
-<li><p>Income - percentage receiving public assistance</p></li>
-<li><p>Education - percentage of kids not enrolled in school</p></li>
-<li><p>Health - percentage of adults without health insurance</p></li>
-<li><p>Health - percentage of children with disability status</p></li>
-<li><p>Health - percentage of adults with disability status</p></li>
-<li><p>Housing - percentage overcrowded: more than 2 occupants per room</p></li>
-<li><p>Housing - percentage cost-burdened</p></li>
-<li><p>Living Conditions - percentage without plumbing facilities</p></li>
-<li><p>Living Conditions - percentage without kitchen facilities</p></li>
-<li><p>Digitalization - percentage without computer</p></li>
-<li><p>Digitalization - percentage without internet access</p></li>
-<li><p>Digitalization - percentage internet access without subscription</p></li>
-<li><p>Employment - percent unemployed</p></li>
-<li><p>Employment - percent not in labor force</p></li>
-</ol>
+<p>To generate the matrix representing tract areas versus indicators of deprivation, the following dimensions were identified:</p>
+<section id="income" class="level3" data-number="4.2.1">
+<h3 data-number="4.2.1" class="anchored" data-anchor-id="income"><span class="header-section-number">4.2.1</span> Income</h3>
+<ul>
+<li><strong>Percentage receiving public assistance</strong></li>
+</ul>
 </section>
-<section id="deprivation-cutoffs" class="level1" data-number="6">
-<h1 data-number="6"><span class="header-section-number">6</span> Deprivation Cutoffs</h1>
+<section id="education" class="level3" data-number="4.2.2">
+<h3 data-number="4.2.2" class="anchored" data-anchor-id="education"><span class="header-section-number">4.2.2</span> Education</h3>
+<ul>
+<li><strong>Percentage of kids not enrolled in school</strong></li>
+<li><strong>Youth not attending school and not working</strong></li>
+<li><strong>Percentage of adults 25 and above that did not finish schooling</strong></li>
+</ul>
+</section>
+<section id="health" class="level3" data-number="4.2.3">
+<h3 data-number="4.2.3" class="anchored" data-anchor-id="health"><span class="header-section-number">4.2.3</span> Health</h3>
+<ul>
+<li><strong>Percentage of adults without health insurance</strong></li>
+<li><strong>Percentage of children with disability status</strong></li>
+<li><strong>Percentage of adults with disability status</strong></li>
+</ul>
+</section>
+<section id="housing" class="level3" data-number="4.2.4">
+<h3 data-number="4.2.4" class="anchored" data-anchor-id="housing"><span class="header-section-number">4.2.4</span> Housing</h3>
+<ul>
+<li><strong>Percentage overcrowded: more than 2 occupants per room</strong></li>
+<li><strong>Percentage cost-burdened</strong></li>
+</ul>
+</section>
+<section id="living-conditions" class="level3" data-number="4.2.5">
+<h3 data-number="4.2.5" class="anchored" data-anchor-id="living-conditions"><span class="header-section-number">4.2.5</span> Living Conditions</h3>
+<ul>
+<li><strong>Percentage without plumbing facilities</strong></li>
+<li><strong>Percentage without kitchen facilities</strong></li>
+</ul>
+</section>
+<section id="digitalization" class="level3" data-number="4.2.6">
+<h3 data-number="4.2.6" class="anchored" data-anchor-id="digitalization"><span class="header-section-number">4.2.6</span> Digitalization</h3>
+<ul>
+<li><strong>Percentage without a computer</strong></li>
+<li><strong>Percentage without internet access</strong></li>
+<li><strong>Percentage with internet access but no subscription</strong></li>
+</ul>
+</section>
+<section id="employment" class="level3" data-number="4.2.7">
+<h3 data-number="4.2.7" class="anchored" data-anchor-id="employment"><span class="header-section-number">4.2.7</span> Employment</h3>
+<ul>
+<li><strong>Percentage unemployed</strong></li>
+<li><strong>Percentage not in labor force</strong></li>
+</ul>
+</section>
+</section>
+<section id="deprivation-cutoffs" class="level2" data-number="4.3">
+<h2 data-number="4.3" class="anchored" data-anchor-id="deprivation-cutoffs"><span class="header-section-number">4.3</span> Deprivation Cutoffs</h2>
 <p>Typically, deprivation cutoffs are thresholds used to determine whether a household is considered deprived in a particular dimension. These cutoffs are crucial in generating a raw deprivation matrix, as they help to classify the population into different categories based on their level of deprivation.</p>
 <p>In our case, we deviate from the standard practice by setting the deprivation cutoffs at 0%. This means that we consider any level of deprivation within a household as significant enough to count towards the overall deprivation score for a census tract. By employing this approach, we are able to capture the full spectrum of deprivation levels, from the most mild to the most severe.</p>
 <div class="cell">
@@ -289,8 +334,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb1-43"><a href="#cb1-43" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(GEOID, <span class="fu">starts_with</span>(<span class="st">"Pct_"</span>))  <span class="co"># Keep only GEOID and calculated percentages</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
-<section id="exploratory-factor-analysis" class="level1" data-number="7">
-<h1 data-number="7"><span class="header-section-number">7</span> Exploratory Factor Analysis</h1>
+<section id="exploratory-factor-analysis" class="level2" data-number="4.4">
+<h2 data-number="4.4" class="anchored" data-anchor-id="exploratory-factor-analysis"><span class="header-section-number">4.4</span> Exploratory Factor Analysis</h2>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(psych)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
@@ -485,6 +530,9 @@ Proportion Var 0.110 0.109 0.095 0.095 0.055
 Cumulative Var 0.110 0.219 0.313 0.408 0.463</code></pre>
 </div>
 </div>
+</section>
+<section id="visualization" class="level2" data-number="4.5">
+<h2 data-number="4.5" class="anchored" data-anchor-id="visualization"><span class="header-section-number">4.5</span> Visualization</h2>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(reshape2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">

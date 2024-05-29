@@ -339,64 +339,103 @@ Code}\label{instructions-to-execute-code}
 To reproduce this analysis, an API key from the US Census Bureau is
 required. Follow these steps to obtain and use the key:
 
-1.) Request an API key by visiting this
+\textbf{1. Request an API key} by visiting this
 \href{https://api.census.gov/data/key_signup.html}{page} to request a
-key
+key.
 
-2.) Activate the key using the link sent to your email.
+\textbf{2. Activate the key} using the link sent to your email.
 
-3.) Store the key as an environment variable in your project for secure
-access.
+\textbf{3. Store the key} as an environment variable in your project for
+secure access.
 
-Note: Detailed instructions and the code for the analysis are provided
-in the accompanying R Markdown document.
+\emph{Note: Detailed instructions and the code for the analysis are
+provided in the accompanying R Markdown document.}
 
-\bookmarksetup{startatroot}
-
-\chapter{Multidimensional Poverty}\label{multidimensional-poverty}
+\section{Dimensions of Deprivation}\label{dimensions-of-deprivation}
 
 The starting point of constructing a Multidimensional Poverty Indicator
 would be the generation of a matrix representing tract areas versus
 indicators of deprivation.
 
-To generate this matrix, the first step is to identify dimensions of
-deprivation that can be constructed using the ACS. These are:
+To generate the matrix representing tract areas versus indicators of
+deprivation, the following dimensions were identified:
 
-\begin{enumerate}
-\def\labelenumi{\arabic{enumi}.}
-\item
-  Income - percentage receiving public assistance
-\item
-  Education - percentage of kids not enrolled in school
-\item
-  Health - percentage of adults without health insurance
-\item
-  Health - percentage of children with disability status
-\item
-  Health - percentage of adults with disability status
-\item
-  Housing - percentage overcrowded: more than 2 occupants per room
-\item
-  Housing - percentage cost-burdened
-\item
-  Living Conditions - percentage without plumbing facilities
-\item
-  Living Conditions - percentage without kitchen facilities
-\item
-  Digitalization - percentage without computer
-\item
-  Digitalization - percentage without internet access
-\item
-  Digitalization - percentage internet access without subscription
-\item
-  Employment - percent unemployed
-\item
-  Employment - percent not in labor force
-\end{enumerate}
+\subsection{Income}\label{income}
 
-\bookmarksetup{startatroot}
+\begin{itemize}
+\tightlist
+\item
+  \textbf{Percentage receiving public assistance}
+\end{itemize}
 
-\chapter{Deprivation Cutoffs}\label{deprivation-cutoffs}
+\subsection{Education}\label{education}
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{Percentage of kids not enrolled in school}
+\item
+  \textbf{Youth not attending school and not working}
+\item
+  \textbf{Percentage of adults 25 and above that did not finish
+  schooling}
+\end{itemize}
+
+\subsection{Health}\label{health}
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{Percentage of adults without health insurance}
+\item
+  \textbf{Percentage of children with disability status}
+\item
+  \textbf{Percentage of adults with disability status}
+\end{itemize}
+
+\subsection{Housing}\label{housing}
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{Percentage overcrowded: more than 2 occupants per room}
+\item
+  \textbf{Percentage cost-burdened}
+\end{itemize}
+
+\subsection{Living Conditions}\label{living-conditions}
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{Percentage without plumbing facilities}
+\item
+  \textbf{Percentage without kitchen facilities}
+\end{itemize}
+
+\subsection{Digitalization}\label{digitalization}
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{Percentage without a computer}
+\item
+  \textbf{Percentage without internet access}
+\item
+  \textbf{Percentage with internet access but no subscription}
+\end{itemize}
+
+\subsection{Employment}\label{employment}
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{Percentage unemployed}
+\item
+  \textbf{Percentage not in labor force}
+\end{itemize}
+
+\section{Deprivation Cutoffs}\label{deprivation-cutoffs}
 
 Typically, deprivation cutoffs are thresholds used to determine whether
 a household is considered deprived in a particular dimension. These
@@ -459,9 +498,7 @@ levels, from the most mild to the most severe.
 \end{Highlighting}
 \end{Shaded}
 
-\bookmarksetup{startatroot}
-
-\chapter{Exploratory Factor Analysis}\label{exploratory-factor-analysis}
+\section{Exploratory Factor Analysis}\label{exploratory-factor-analysis}
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -685,6 +722,8 @@ SS loadings    1.643 1.636 1.423 1.418 0.824
 Proportion Var 0.110 0.109 0.095 0.095 0.055
 Cumulative Var 0.110 0.219 0.313 0.408 0.463
 \end{verbatim}
+
+\section{Visualization}\label{visualization}
 
 \begin{Shaded}
 \begin{Highlighting}[]
