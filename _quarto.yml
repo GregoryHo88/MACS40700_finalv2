@@ -8,9 +8,9 @@ book:
   date: "03/05/2024"
   chapters:
     - index.qmd
-    - multidimensional_poverty.qmd
     - spatial_distribution.qmd
     - digital_divide_analysis.qmd
+    - multidimensional_poverty.qmd
     - credits.qmd
 
 format:
