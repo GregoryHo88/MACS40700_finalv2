@@ -4,7 +4,9 @@ title: "Spatial Distribution of Poverty & Latent Factors"
 
 The interactive dashboard serves as a tool for dissecting this landscape of urban poverty. By mapping the contours of poverty's spatial distribution, this dashboard illuminates the not just "how much" but also the "where" of poverty.
 
-<iframe src="https://gregoryho.shinyapps.io/interactive_mdpi/" width="100%" height="900"></iframe>
+<iframe src="https://gregoryho.shinyapps.io/interactive_mdpi/" width="100%" height="980">
+
+</iframe>
 
 For example, the pronounced concentration of *Employment and Shelter* and *Education and Health* within specific localities underscores the urgent need for targeted policy interventions. In these identified areas, specific strategies such as housing initiatives that subsidize renovations, can directly address the localized nature of these deprivations. Tailoring policies to the unique characteristics of each neighborhood ensures that resources are efficiently allocated, directly benefiting those in most need.
 
