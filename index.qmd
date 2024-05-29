@@ -310,7 +310,7 @@ The interactive dashboard serves as a tool for dissecting this landscape of urba
 
 Conversely, the more diffused patterns associated with *Labor and Housing Cost*, *Digital Divide*, and *School Attendance* suggest systemic issues that pervade beyond individual neighborhoods. These widespread challenges call for overarching policy frameworks that address the broader infrastructural and societal deficits. Enhancing digital infrastructure, for instance, should not only focus on expanding access but also on ensuring affordability and fostering digital literacy across the board. Such inclusive strategies are pivotal in bridging the digital divide, thereby facilitating equitable access to essential services and opportunities.
 
-**An analysis of the Digital Divide**
+## An analysis of the Digital Divide
 
 In an increasingly digital world, the divide between those with access to technology and those without is becoming a critical area of concern for urban development and social equity. This analysis seeks to explore the relationship between poverty rates and digital accessibility within Cook County, focusing specifically on households without computers and those lacking internet access.
 
