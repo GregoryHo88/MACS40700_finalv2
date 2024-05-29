@@ -17,7 +17,7 @@ library(patchwork)
 library(psych)
 library(reshape2)
 library(colorspace)
-
+library(plotly)
 ```
 
 ```{r viz1_etl, echo = FALSE, include = FALSE}
@@ -219,20 +219,44 @@ long_data <- combined_data %>%
                names_to = "Indicator",
                values_to = "Percentage")
 
-# Create combined scatterplot
-ggplot(long_data, aes(x = Percentage, y = poverty_rate)) +
-  geom_point(alpha = 0.5, color = "#0072B2") +
-  geom_smooth(method = "lm", color = "#D55E00", se = TRUE) +  #linear trendline with SEs
-  facet_wrap(~Indicator, scales = "free_x",
-             ncol = 2,
+# Create combined scatterplot with ggplot2
+gg_plot <- ggplot(long_data, aes(x = Percentage, y = poverty_rate, color = Indicator)) +
+  geom_point(alpha = 0.7) +
+  geom_smooth(method = "lm", se = TRUE) +  # Linear trendline with SEs
+  facet_wrap(~ Indicator, scales = "free_x",
              labeller = as_labeller(c(Pct_No_Computer = "No Computer", Pct_No_Internet = "No Internet"))) +
   labs(title = "Poverty Rate vs Digital Divide Indicators",
        x = "Percentage",
-       y = "Poverty Rate") +
+       y = "Poverty Rate",
+       color = "Indicator") +
+  scale_color_manual(values = c("Pct_No_Computer" = "#1f77b4", "Pct_No_Internet" = "#ff7f0e")) +
   theme_minimal() +
   theme(strip.background = element_blank(),
-        strip.text.x = element_text(size = 12, face = "bold"))
+        strip.text.x = element_text(size = 12, face = "bold"),
+        legend.position = "bottom")
+
+# Convert ggplot2 plot to plotly for interactivity
+plotly_plot <- ggplotly(gg_plot) %>%
+  layout(title = "Poverty Rate vs Digital Divide Indicators",
+         xaxis = list(title = "Percentage"),
+         yaxis = list(title = "Poverty Rate"),
+         legend = list(title = list(text = "Indicator")),
+         annotations = list(
+           list(
+             x = 0.5,
+             y = -0.15,
+             showarrow = FALSE,
+             text = "Higher values indicate higher deprivation levels.",
+             xref = "paper",
+             yref = "paper"
+           )
+         ))
+
+# Save the interactive plot as an HTML file (if needed)
+htmlwidgets::saveWidget(plotly_plot, "interactive_figure3.html")
 ```
+
+<iframe src="interactive_figure3.html" width="100%" height="600"></iframe>
 
 The visualizations underscore a compelling narrative: areas with higher poverty rates tend to have a greater percentage of households without computers and internet access, pointing to a digital divide that mirrors socioeconomic disparities. This correlation not only highlights the barriers faced by economically disadvantaged communities in accessing digital resources but also emphasizes the critical role that digital accessibility plays in enabling opportunities for education, employment, and civic participation.
 
