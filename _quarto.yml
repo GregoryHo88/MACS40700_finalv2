@@ -9,8 +9,9 @@ book:
   chapters:
     - index.qmd
     - multidimensional_poverty.qmd
-    - spatial_distribution.qmd  # New section for Iframe and analysis
-    - digital_divide_analysis.qmd  # New section for digital divide analysis
+    - spatial_distribution.qmd
+    - digital_divide_analysis.qmd
+    - credits.qmd
 
 format:
   html:
@@ -22,12 +23,14 @@ format:
       left:
         - text: "Home"
           href: index.qmd
-        - text: "Methodology"
-          href: multidimensional_poverty.qmd
         - text: "Spatial Distribution"
           href: spatial_distribution.qmd
         - text: "Digital Divide Analysis"
           href: digital_divide_analysis.qmd
+        - text: "Methodology"
+          href: multidimensional_poverty.qmd
+        - text: "Credits"
+          href: credits.qmd
   pdf:
     documentclass: scrreprt
 

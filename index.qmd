@@ -300,15 +300,4 @@ Figure 1 presents a factor analysis of various deprivation indicators within Chi
 
 Each bar on this graph tells a story: a slice of life defined by absence — be it in health insurance, a roof over one's head, or a computer in one's home. These bars stretch out to the extent of their 'factor loading strength,' a numerical representation of how strongly each indicator resonates with a factor (facet of poverty). Longer bars signifies a stronger association with a particular facet.
 
-We've dissected the graph into thematic territories, each named for a facet of deprivation like "Educational and Health," or "Digital Divide." These are not mere labels but analytical realms — Multiple Regression scores that cluster the indicators into meaningful assemblies. Here, the challenges of poverty don't stand in isolation; they cluster and often overlap, offering insight into which factors bundle together in the urban landscape of Chicago
-
-
-# Credits
-
-Developed as a final project for the course MACS 40700 at the University of Chicago. The author is thankful to Jean Clipperton and Zihua Chen for the guidance and feedback received throughout the quarter. Special thanks to Tiwaa Bruks for additional inputs on reading experience.
-
-I benefited from [danmirman](https://rpubs.com/danmirman/plotting_factor_analysis) in producing *Figure 1*
-
-Methods for Multidimensional Poverty based on
-
-Alkire, Sabina, and James Foster. "Counting and multidimensional poverty measurement." Journal of public economics 95, no. 7-8 (2011): 476-487.
+We've dissected the graph into thematic territories, each named for a facet of deprivation like "Educational and Health," or "Digital Divide." These are not mere labels but analytical realms — Multiple Regression scores that cluster the indicators into meaningful assemblies. Here, the challenges of poverty don't stand in isolation; they cluster and often overlap, offering insight into which factors bundle together in the urban landscape of Chicago.
