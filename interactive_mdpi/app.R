@@ -15,7 +15,6 @@ data_path <- readRDS("factor_scores_geoids.rds")
 
 # Define UI for application
 ui <- fluidPage(
-  titlePanel("Figure 2: Spatial Distribution of Poverty & Latent Factors"),
   sidebarLayout(
     sidebarPanel(
       selectInput("selected_factor", "Select Factor:", 
