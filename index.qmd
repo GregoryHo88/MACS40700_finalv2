@@ -275,7 +275,7 @@ loadings_long$Variable <- factor(loadings_long$Variable, levels = Ord,
 
 ggplot(loadings_long, aes(Variable, abs(Loading), fill=Loading)) + 
   facet_wrap(~ Factor, nrow=1) + 
-  geom_bar(stat="identity", color="grey") + 
+  geom_bar(stat="identity", color="black", size=0.3) +  # change outline to black, increase size
   coord_flip() + 
   scale_fill_continuous_diverging(palette = "Cyan-Mage", l1 = 30, l2 = 100, p1 = .9, p2 = 1.2) +
   labs(x= "Dimension of Deprivation", y = "Loading Strength", fill = "Loading Strength") +
@@ -291,8 +291,8 @@ ggplot(loadings_long, aes(Variable, abs(Loading), fill=Loading)) +
     legend.text = element_text(size = 12),  # Adjust legend text
     legend.title = element_text(size = 14),  # Adjust legend title
     legend.background = element_rect(fill = "grey93", colour = "black", size = 0.5),
-    panel.spacing = unit(0.33, "lines"), #spacing between facets
-    plot.margin = margin(12, 12, 12, 12) # reminder: plot margins (top, right, bottom, left)
+    panel.spacing = unit(0.33, "lines"),  # spacing between facets
+    plot.margin = margin(12, 12, 12, 12)  # reminder: plot margins (top, right, bottom, left)
   )
 ```
 
